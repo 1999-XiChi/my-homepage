@@ -1,29 +1,11 @@
-# aa
+# my homepage
 
-## Project setup
-```
-yarn install
-```
+## 1.介绍
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
+homepage就是我个人网站的首页啦，不用介绍了，走链接吧~  
+[西池 ฅ^•ﻌ•^ฅ | xichi's homepage](www.xichi.xyz)
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+## 2.How to start?
 
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+1. `yarn install` 安装依赖
+2. `yarn serve` 本地运行
