@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import "./assets/common.css";
 export default {
   name: "App"
 };
@@ -15,10 +16,10 @@ body {
   margin: 0;
   padding: 0;
 }
-li{
+li {
   list-style: none;
 }
-a{
+a {
   text-decoration: none;
 }
 #app {

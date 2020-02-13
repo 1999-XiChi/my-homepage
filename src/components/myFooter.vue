@@ -47,6 +47,7 @@ export default {
   width 100vw
   height 100px
   color #fff
+  font-size 12px
   animation slideUp 1s ease
   &:hover .footer
     transform translateY(0)

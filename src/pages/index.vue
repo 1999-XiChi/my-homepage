@@ -34,6 +34,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@font-face
+  font-family POWER-SELL
+  src url('http://njupt.xichi.xyz/fonts/POWER SELL.ttf')
+@font-face
+  font-family A61
+  src url('http://njupt.xichi.xyz/fonts/A61华康娃娃体.ttf')
 .bg-wrap
   position relative
   width 100vw
@@ -48,12 +54,12 @@ export default {
     left 0
     width 100%
     height 100%
-    background-color rgba(0,0,0,0.3)
+    background-color rgba(0,0,0,0.1)
     .copyright
       position absolute
       top 20px
       left 10px
-      font 12px
+      font-size 12px
       color rgba(255,255,255,0.5)
       cursor pointer
       &:hover
