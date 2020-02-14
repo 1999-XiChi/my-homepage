@@ -102,9 +102,14 @@ export default {
       //part1: 画布
       var canvas = this.$refs.canvas;
       var context = canvas.getContext("2d");
+      
+      // 修复canvas在高分屏下模糊的问题
+      canvas.width = canvas.clientWidth*window.devicePixelRatio;
+      canvas.height = canvas.clientHeight*window.devicePixelRatio;
+      context.setTransform(window.devicePixelRatio,0,0,window.devicePixelRatio,0,0);
 
-      var WIDTH = canvas.width;
-      var HEIGHT = canvas.height;
+      var WIDTH = canvas.clientWidth;
+      var HEIGHT = canvas.clientHeight;
 
       //part2: 音频
       //audio.load();
