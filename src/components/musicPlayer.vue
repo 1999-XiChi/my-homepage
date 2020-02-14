@@ -41,6 +41,18 @@ export default {
           author: "Taylor Swift",
           name: "Blank Space",
           src: "http://music.xichi.xyz/homepage/Taylor Swift - Blank Space.mp3"
+        },
+        {
+          id: 3,
+          author: "Kendrick Lamar",
+          name: "DNA",
+          src: "http://music.xichi.xyz/homepage/Kendrick Lamar - DNA.mp3"
+        },
+         {
+          id: 4,
+          author: "P!nk",
+          name: "Try",
+          src: "http://music.xichi.xyz/homepage/P!nk - Try.mp3"
         }
       ],
       currentSong:
@@ -220,4 +232,10 @@ export default {
   animation-play-state paused !important
 .running
   animation-play-state running !important
+@media screen and (max-width: 767px)
+  #musicPlayer
+    #canvas
+      width 90%
+    .nav
+      width 90%
 </style>

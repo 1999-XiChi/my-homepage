@@ -29,8 +29,14 @@ export default {
 
 <style lang="stylus" scoped>
 .home
+  display flex
+  flex-direction column
+  align-items center
+  justify-content center
+  height 100%
+  width 100%
   .main-focus
-    margin-top 1.5rem
+    width 100%
     padding 10px
     color #fff
     .title
@@ -43,8 +49,13 @@ export default {
       width 50%
       margin 0 auto
       padding-top 20px
-      font 22px A61
+      font .5rem A61
       text-align left
       li
         line-height 30px
+@media screen and (max-width: 767px)
+  .home
+    .main-focus
+      .info
+        width 90%
 </style>
