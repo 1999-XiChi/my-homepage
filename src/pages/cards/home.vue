@@ -58,4 +58,5 @@ export default {
     .main-focus
       .info
         width 90%
+        font 16px A61
 </style>

@@ -7,7 +7,6 @@ const info = r => require.ensure([], () => r(require('@/pages/cards/info.vue')),
 const more = r => require.ensure([], () => r(require('@/pages/cards/more.vue')), 'more')
 
 var router = new VueRouter({
-  mode: 'history',
   routes: [
     {
       path: '/', redirect: '/home',component: index, children: [

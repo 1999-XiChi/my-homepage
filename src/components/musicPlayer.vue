@@ -1,5 +1,5 @@
 <template>
-  <div id="musicPlayer">
+  <div class="musicPlayer">
     <audio
       :src="currentSong"
       autoplay
@@ -12,7 +12,10 @@
     <canvas id="canvas" ref="canvas"></canvas>
     <div class="nav">
       <div class="pre" @click="playPreSong"></div>
-      <div class="name">{{ songs[currentIndex].name }}</div>
+      <div class="name">
+        {{ songs[currentIndex].name
+        }}<span class="author">--{{ songs[currentIndex].author }}</span>
+      </div>
       <div class="next" @click="playNextSong"></div>
     </div>
   </div>
@@ -20,6 +23,12 @@
 
 <script>
 export default {
+  props: {
+    visualize: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       songs: [
@@ -48,7 +57,7 @@ export default {
           name: "DNA",
           src: "http://music.xichi.xyz/homepage/Kendrick Lamar - DNA.mp3"
         },
-         {
+        {
           id: 4,
           author: "P!nk",
           name: "Try",
@@ -102,11 +111,19 @@ export default {
       //part1: 画布
       var canvas = this.$refs.canvas;
       var context = canvas.getContext("2d");
-      
+
       // 修复canvas在高分屏下模糊的问题
-      canvas.width = canvas.clientWidth*window.devicePixelRatio;
-      canvas.height = canvas.clientHeight*window.devicePixelRatio;
-      context.setTransform(window.devicePixelRatio,0,0,window.devicePixelRatio,0,0);
+      // window.devicePixelRatio = css的像素 / 屏幕的物理像素
+      canvas.width = canvas.clientWidth * window.devicePixelRatio;
+      canvas.height = canvas.clientHeight * window.devicePixelRatio;
+      context.setTransform(
+        window.devicePixelRatio,
+        0,
+        0,
+        window.devicePixelRatio,
+        0,
+        0
+      );
 
       var WIDTH = canvas.clientWidth;
       var HEIGHT = canvas.clientHeight;
@@ -135,7 +152,7 @@ export default {
       function renderFrame() {
         requestAnimationFrame(renderFrame); //方法renderFrame托管到定时器，无限循环调度，频率<16.6ms/次
 
-        context.fillStyle = "transparent"; //黑色背景
+        context.fillStyle = "transparent"; //透明背景
         context.clearRect(0, 0, WIDTH, HEIGHT);
         context.fillRect(0, 0, WIDTH, HEIGHT); //画布拓展全屏,动态调整
 
@@ -168,12 +185,6 @@ export default {
       //audio.play();
     }
   },
-  watch: {
-    audioState: function() {
-      if (this.audioState) this.audioVisualization();
-      return !this.$refs.audio.paused;
-    }
-  },
   mounted() {
     window.onload = () => {
       var audio = this.$refs.audio;
@@ -181,7 +192,7 @@ export default {
       if (!audio.paused) {
         mp3btn.classList.add("running");
         mp3btn.classList.remove("paused");
-        this.audioVisualization();
+        this.$options.methods.audioVisualization.bind(this)();
       }
     };
   }
@@ -189,7 +200,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-#musicPlayer
+.musicPlayer
   .mp3btn
     position absolute
     top 20px
@@ -198,6 +209,7 @@ export default {
     height 30px
     background-image url('http://njupt.xichi.xyz/icon/music.png')
     background-size 100% 100%
+    cursor pointer
     animation rotate 2s linear infinite
     transition all 2s ease-in
   .chooseBox
@@ -224,6 +236,9 @@ export default {
     .next
       background-image url("http://njupt.xichi.xyz/icons/next.png")
       background-size 100% 100%
+    .author
+      padding-left 1rem
+      font-size .3rem
 @keyframes rotate {
   from{
     transform:rotate(0);
@@ -238,7 +253,7 @@ export default {
 .running
   animation-play-state running !important
 @media screen and (max-width: 767px)
-  #musicPlayer
+  .musicPlayer
     #canvas
       width 90%
     .nav
