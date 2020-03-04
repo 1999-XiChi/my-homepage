@@ -4,13 +4,17 @@
       Here are my works, hoping you'll love them ~
     </div>
     <div class="workSquare">
-      <work-card
-        v-for="(workCard, i) in currentCards"
-        :key="i"
-        class="workCard"
-      >
-        {{ workCard }}
-      </work-card>
+      <transition name="workCards" tag="div" mode="out-in">
+        <div class="main" :key="pageIndex">
+          <work-card
+            v-for="(workCard, i) in currentCards"
+            :key="i"
+            class="workCard"
+          >
+            {{ workCard }}
+          </work-card>
+        </div>
+      </transition>
       <div class="up-down">
         <div class="up" ref="up" @click="prePage">▲</div>
         <div class="down" ref="down" @click="nextPage">▼</div>
@@ -41,8 +45,9 @@ export default {
   watch: {
     pageIndex: function(newIndex) {
       if (newIndex === 0) this.$refs.up.style.opacity = ".5";
-      else if (newIndex === this.pageCount-1) this.$refs.down.style.opacity = ".5";
-      else{
+      else if (newIndex === this.pageCount - 1)
+        this.$refs.down.style.opacity = ".5";
+      else {
         this.$refs.up.style.opacity = "1";
         this.$refs.down.style.opacity = "1";
       }
@@ -95,11 +100,14 @@ export default {
     position relative
     width 70%
     height 70%
-    display flex
-    flex-direction row
-    justify-content space-around
-    align-items space-around
-    flex-wrap wrap
+    .main
+      width 100%
+      height 100%
+      display flex
+      flex-direction row
+      justify-content space-around
+      align-items space-around
+      flex-wrap wrap
     .workCard
       width 33%
       height 200px
@@ -113,4 +121,15 @@ export default {
       color #fff
       font-size 30px
       cursor pointer
+.workCards-enter-active, .workCards-leave-active
+  transition all .5s ease-in
+.workCards-enter
+  opacity 0
+  transform perspective(500px) translate3d(0,0,10px)
+.workCards-leave-to
+  opacity 0
+  transform perspective(500px) translate3d(0,0,-10px)
+.workCards-enter-to,.workCards-leave
+  opacity 1
+  transform perspective(500px) translate3d(0,0,0)
 </style>
