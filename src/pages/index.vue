@@ -5,20 +5,19 @@
         Photo by Alex Machado on Unsplash
       </div>
       <side-nav></side-nav>
-      <my-footer ref="footer"></my-footer>
-      <router-view></router-view>
+      <transition name="cards" mode="out-in">
+        <router-view></router-view>      
+      </transition>
     </div>
   </div>
 </template>
 
 <script>
 import sideNav from "_c/sideNav";
-import myFooter from "_c/myFooter";
 
 export default {
   components: {
-    sideNav,
-    myFooter
+    sideNav
   },
   data() {
     return {};
@@ -64,6 +63,17 @@ export default {
       cursor pointer
       &:hover
         color rgba(255,255,255,0.8)
+.cards-enter-active, .cards-leave-active
+  transition all .5s ease-in
+.cards-enter
+  opacity 0
+  transform translateX(10%)
+.cards-leave-to
+  opacity 0
+  transform translateX(-10%)
+.cards-enter-to,.cards-leave
+  opacity 1
+  transform translateX(0)
 @keyframes clear {
   0%{
     filter:blur(10px);
