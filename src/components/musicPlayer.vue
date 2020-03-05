@@ -11,12 +11,12 @@
     <div class="mp3btn paused" @click="playMusic" ref="mp3btn"></div>
     <canvas id="canvas" ref="canvas"></canvas>
     <div class="nav">
-      <div class="pre" @click="playPreSong"></div>
+      <div class="pre" @click="playPreSong">←</div>
       <div class="name">
         {{ songs[currentIndex].name
         }}<span class="author">--{{ songs[currentIndex].author }}</span>
       </div>
-      <div class="next" @click="playNextSong"></div>
+      <div class="next" @click="playNextSong">→</div>
     </div>
   </div>
 </template>
@@ -227,15 +227,9 @@ export default {
     justify-content space-between
     align-items center
     .pre, .next
-      width 1.5rem
-      height 0.5rem
+      font-size 1rem
+      color #fff
       cursor pointer
-    .pre
-      background-image url("http://njupt.xichi.xyz/icons/previous.png")
-      background-size 100% 100%
-    .next
-      background-image url("http://njupt.xichi.xyz/icons/next.png")
-      background-size 100% 100%
     .author
       padding-left 1rem
       font-size .3rem
@@ -255,6 +249,7 @@ export default {
 @media screen and (max-width: 767px)
   .musicPlayer
     #canvas
+      height 50px
       width 90%
     .nav
       width 90%

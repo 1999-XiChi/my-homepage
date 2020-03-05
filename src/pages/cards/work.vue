@@ -83,9 +83,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@font-face
-  font-family POWER-SELL
-  src url('http://njupt.xichi.xyz/fonts/POWER SELL.ttf')
 .work
   height 100vh
   display flex
@@ -108,12 +105,10 @@ export default {
       justify-content space-around
       align-items space-around
       flex-wrap wrap
-    .workCard
-      width 33%
-      height 200px
-      margin 20px
-      border-radius 10px
-      background-color #fff
+      .workCard
+        width 33%
+        height 200px
+        margin 20px
     .up-down
       position absolute
       bottom 0
@@ -123,13 +118,23 @@ export default {
       cursor pointer
 .workCards-enter-active, .workCards-leave-active
   transition all .5s ease-in
-.workCards-enter
-  opacity 0
-  transform perspective(500px) translate3d(0,0,10px)
-.workCards-leave-to
-  opacity 0
-  transform perspective(500px) translate3d(0,0,-10px)
+.workCards-enter,.workCards-leave-to
+  opacity 0.5
 .workCards-enter-to,.workCards-leave
   opacity 1
-  transform perspective(500px) translate3d(0,0,0)
+@media screen and (max-width:787px)
+  .work
+    padding-top 30px
+    .workSquare
+      box-sizing border-box
+      padding 0 10px
+      width 100%
+      height 70%
+      .main .workCard
+        width 40%
+        height 150px
+        margin 10px
+      .up-down
+        bottom -40px
+        font-size 20px
 </style>

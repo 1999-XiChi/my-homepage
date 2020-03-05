@@ -47,10 +47,11 @@ export default {
 @media screen and (max-width: 767px)
   #sideNav
     position absolute
-    top .3rem
+    top 20px
     left 50%
     transform translateX(-50%)
     display flex
     .tab
-      padding-right 1rem
+      font-size 16px
+      padding-right 25px
 </style>

@@ -1,52 +1,78 @@
 <template>
-  <div class="bg-wrap">
+  <div class="bg-wrap" ref="bg">
+    <my-loading v-if="loaded"></my-loading>
     <div class="bg">
       <div class="copyright" @click="clickFn('https://unsplash.com/')">
         Photo by Alex Machado on Unsplash
       </div>
       <side-nav></side-nav>
-      <transition name="cards" mode="out-in">
-        <router-view></router-view>      
-      </transition>
+      <keep-alive>
+        <transition name="cards" mode="out-in">
+          <router-view></router-view>
+        </transition>
+      </keep-alive>
     </div>
   </div>
 </template>
 
 <script>
 import sideNav from "_c/sideNav";
+import myLoading from "_c/myLoading";
 
 export default {
   components: {
-    sideNav
+    sideNav,
+    myLoading
   },
   data() {
-    return {};
+    return {
+      loaded: true
+    };
   },
   methods: {
     clickFn(url) {
       window.open(url, "_blank");
+    },
+    async loadSource() {
+      //资源预加载
+     let source = new Array(new Image(), new Image(), new Image());
+      source[0].src = "http://njupt.xichi.xyz/fonts/A61华康娃娃体.ttf";
+      source[1].src = "http://njupt.xichi.xyz/fonts/POWER SELL.ttf";
+      source[2].src = "http://njupt.xichi.xyz/homepage/bg.jpg";
+      source[2].onload = () => {
+        this.$refs.bg.style.backgroundImage =
+          "url('http://njupt.xichi.xyz/homepage/bg.jpg')";
+        this.loaded = false;
+        this.$refs.bg.classList.add("clear");
+      };
+     setTimeout(()=>{
+        this.loaded = false;
+      },3000)
     }
   },
-  mounted(){
+  mounted() {
+    this.loadSource();
   }
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 @font-face
   font-family POWER-SELL
   src url('http://njupt.xichi.xyz/fonts/POWER SELL.ttf')
 @font-face
   font-family A61
   src url('http://njupt.xichi.xyz/fonts/A61华康娃娃体.ttf')
+</style>
+<style lang="stylus" scoped>
 .bg-wrap
   position relative
   width 100vw
   height 100vh
   overflow hidden
-  background url('http://njupt.xichi.xyz/homepage/bg.jpg') center center
+  background-color #3085a3
+  background-position center center
   background-size cover
-  animation clear 1s ease-in
   .bg
     position absolute
     top 0
@@ -74,6 +100,9 @@ export default {
 .cards-enter-to,.cards-leave
   opacity 1
   transform translateX(0)
+
+.clear
+  animation clear 1s ease-in
 @keyframes clear {
   0%{
     filter:blur(10px);
