@@ -33,8 +33,14 @@ export default {
     border-radius 50%
     background linear-gradient(#e66465, #9198e5)
     color #fff
-    P
+    animation clear 1s ease-in both
+    p
       font-size 20px
       letter-spacing 1em
       padding-left 1em
+@keyframes clear
+  0%
+    opacity 0
+  100%
+    opacity 0.5  
 </style>

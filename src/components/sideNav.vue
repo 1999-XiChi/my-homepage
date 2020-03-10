@@ -9,10 +9,10 @@ export default {
   data() {
     return {
       nav: [
-        { title: "Home", icon: "", url:"/home" },
-        { title: "Work", icon: "", url:"/work" },
-        { title: "Info", icon: "", url:"/info" },
-        { title: "More", icon: "", url:"/more" }
+        { id: 0, title: "Home", icon: "", url:"/home" },
+        { id: 1, title: "Work", icon: "", url:"/work" },
+        { id: 2, title: "Info", icon: "", url:"/info" },
+        { id: 3, title: "More", icon: "", url:"/more" }
       ]
     };
   },
@@ -25,8 +25,10 @@ export default {
     }
   },
   mounted(){
+    let currentUrl = this.$route.path;
+    let currentIndex = this.nav.find(el => el.url === currentUrl).id || 0;
     let sideNav = this.$refs.sideNav;
-    sideNav.children[0].classList.add("active");
+    sideNav.children[currentIndex].classList.add("active");
   }
 };
 </script>

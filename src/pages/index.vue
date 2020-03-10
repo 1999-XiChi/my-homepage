@@ -36,8 +36,8 @@ export default {
     async loadSource() {
       //资源预加载
      let source = new Array(new Image(), new Image(), new Image());
-      source[0].src = "http://njupt.xichi.xyz/fonts/A61华康娃娃体.ttf";
-      source[1].src = "http://njupt.xichi.xyz/fonts/POWER SELL.ttf";
+      source[0].src = "http://njupt.xichi.xyz/fontspider/A61.ttf";
+      source[1].src = "http://njupt.xichi.xyz/fontspider/POWER%20SELL.ttf";
       source[2].src = "http://njupt.xichi.xyz/homepage/bg.jpg";
       source[2].onload = () => {
         this.$refs.bg.style.backgroundImage =
@@ -59,10 +59,10 @@ export default {
 <style lang="stylus">
 @font-face
   font-family POWER-SELL
-  src url('http://njupt.xichi.xyz/fonts/POWER SELL.ttf')
+  src url('http://njupt.xichi.xyz/fontsipder/POWER%20SELL.ttf')
 @font-face
   font-family A61
-  src url('http://njupt.xichi.xyz/fonts/A61华康娃娃体.ttf')
+  src url('http://njupt.xichi.xyz/fontsipder/A61.ttf')
 </style>
 <style lang="stylus" scoped>
 .bg-wrap

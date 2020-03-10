@@ -25,6 +25,7 @@
 
 <script>
 import workCard from "_c/work/workCard";
+
 export default {
   components: {
     workCard
@@ -40,6 +41,16 @@ export default {
   computed: {
     pageCount: function() {
       return Math.ceil(this.workCards.length / this.pageCardsCount);
+    },
+    pageCards: function() {
+      let index = 0;
+      let pageCards = new Array();
+      do {
+        let begin = index++ * this.pageCardsCount;
+        let stop = begin + this.pageCardsCount;
+        pageCards.push(this.workCards.slice(begin, stop));
+      } while (index < this.pageCount);
+      return pageCards;
     }
   },
   watch: {

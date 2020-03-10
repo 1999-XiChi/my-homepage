@@ -2,16 +2,27 @@
   <div class="footer-wrap">
     <div class="footer">
       <div class="info">
-        <div class="title">HEELO!</div>
-        <div>Nice to meet you, my friends!</div>
-        <img src="../assets/miku.png" alt="">
+        <div class="title">HELLO!</div>
+        <div id="busuanzi_container_site_pv" class="pv">
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        </div>
+        <div id="busuanzi_container_site_uv" class="uv">
+           本站访客数<span id="busuanzi_value_site_uv"></span>人次
+        </div>
+        <img src="../assets/miku.png" alt="" />
       </div>
       <div class="links">
         <div class="title">Links</div>
         <ul>
-          <li @click="clickFn('https://1999-xichi.github.io/')">xichi's blog</li>
-          <li @click="clickFn('http://www.xichi.xyz/test/')">NJUPT Movie Club</li>
-          <li>...</li>
+          <li @click="clickFn('https://1999-xichi.github.io/')">
+            XiChi's Blog
+          </li>
+          <li @click="clickFn('http://www.xichi.xyz/test/')">
+            NJUPT Movie Club
+          </li>
+          <li @click="clickFn('http://api.xichi.xyz')">
+            XiChi's API
+          </li>
         </ul>
       </div>
       <div class="contact-us">
@@ -36,8 +47,7 @@ export default {
       window.open(url, "_blank");
     }
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 
@@ -71,12 +81,22 @@ export default {
     .title
       font-weight bold
     .info
+      max-width 40%
+      .pv, .uv
+        font-size 12px
+        color rgba(255,255,255,0.5)
       img
-        width 1.5rem
-        height 1.2rem
+        display block
+        margin 0 auto
+        width 1.4rem
+        height auto
 @media screen and (max-width: 767px)
   .footer-wrap
     .footer
       transform translateY(0)
       padding 10px 10px
+      .info
+        img
+          width 40px
+          height auto
 </style>

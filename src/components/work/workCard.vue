@@ -49,4 +49,9 @@ export default {
   &:hover .card-bg-wrap
     width calc(100% + 20px)
     height calc(100% + 10px)
+@media screen and (max-width:787px)
+  .card-wrap
+    &:hover .card-bg-wrap
+      width 100%
+      height 100%
 </style>
