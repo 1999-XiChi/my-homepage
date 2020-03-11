@@ -3,149 +3,93 @@
     <div class="landInText">
       Here are my works, hoping you'll love them ~
     </div>
-    <div class="workSquare">
-      <transition name="workCards" tag="div" mode="out-in">
-        <div class="main" :key="pageIndex">
-          <work-card
-            v-for="(workCard, i) in currentCards"
-            :key="i"
-            class="workCard"
-          >
-            {{ workCard }}
-          </work-card>
-        </div>
-      </transition>
-      <div class="up-down">
-        <div class="up" ref="up" @click="prePage">▲</div>
-        <div class="down" ref="down" @click="nextPage">▼</div>
-      </div>
-    </div>
+    <!-- swiper -->
+    <swiper :options="swiperOption">
+      <swiper-slide v-for="(card, index) in workCards" :key="index">
+        <work-card class="workCard">
+          {{ card }}
+        </work-card>
+      </swiper-slide>
+      <div class="swiper-pagination" slot="pagination"></div>
+    </swiper>
   </div>
 </template>
 
 <script>
 import workCard from "_c/work/workCard";
-
+import "swiper/dist/css/swiper.css";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
 export default {
   components: {
-    workCard
+    workCard,
+    swiper,
+    swiperSlide
   },
   data() {
     return {
-      pageIndex: 0,
-      pageCardsCount: 4,
-      currentCards: [],
-      workCards: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+      workCards: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      swiperOption: {
+        slidesPerView: 2,
+        slidesPerColumn: 2,
+        slidesPerGroup: 2,
+        spaceBetween:
+          (document.documentElement.clientWidth || document.body.clientWidth) <=
+          767
+            ? 60
+            : 55,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true
+        }
+      }
     };
   },
-  computed: {
-    pageCount: function() {
-      return Math.ceil(this.workCards.length / this.pageCardsCount);
-    },
-    pageCards: function() {
-      let index = 0;
-      let pageCards = new Array();
-      do {
-        let begin = index++ * this.pageCardsCount;
-        let stop = begin + this.pageCardsCount;
-        pageCards.push(this.workCards.slice(begin, stop));
-      } while (index < this.pageCount);
-      return pageCards;
-    }
-  },
-  watch: {
-    pageIndex: function(newIndex) {
-      if (newIndex === 0) this.$refs.up.style.opacity = ".5";
-      else if (newIndex === this.pageCount - 1)
-        this.$refs.down.style.opacity = ".5";
-      else {
-        this.$refs.up.style.opacity = "1";
-        this.$refs.down.style.opacity = "1";
-      }
-    }
-  },
-  methods: {
-    prePage() {
-      if (--this.pageIndex === -1) {
-        this.pageIndex = 0;
-        return;
-      }
-      this.pageIndex %= this.pageCount;
-      const begin = this.pageIndex * this.pageCardsCount;
-      const stop = begin + this.pageCardsCount;
-      this.currentCards = this.workCards.slice(begin, stop);
-    },
-    nextPage() {
-      if (++this.pageIndex === this.pageCount) {
-        this.pageIndex = this.pageCount - 1;
-        return;
-      }
-      this.pageIndex %= this.pageCount;
-      const begin = this.pageIndex * this.pageCardsCount;
-      const stop = begin + this.pageCardsCount;
-      this.currentCards = this.workCards.slice(begin, stop);
-    }
-  },
-  mounted() {
-    this.currentCards = this.workCards.slice(0, 4);
-    this.$refs.up.style.opacity = ".5";
-  }
+  methods: {},
+  mounted() {}
 };
 </script>
 
 <style lang="stylus" scoped>
 .work
+  margin 0 auto
+  width 70%
   height 100vh
+  padding-top 20px
   display flex
+  flex-direction column
   align-items center
   justify-content center
-  flex-direction column
   .landInText
+    margin 20px auto
     font .8rem POWER-SELL
     opacity 0.8
     color #fff
-  .workSquare
-    position relative
-    width 70%
-    height 70%
-    .main
+  .swiper-container
+    width 100%
+    height auto !important
+    padding-right 50px
+    padding-bottom 50px
+    margin-left auto
+    margin-right auto
+    .swiper-slide
       width 100%
-      height 100%
-      display flex
-      flex-direction row
-      justify-content space-around
-      align-items space-around
-      flex-wrap wrap
+      height 200px
       .workCard
-        width 33%
-        height 200px
-        margin 20px
-    .up-down
-      position absolute
+        margin 0 auto
+        width 80%
+        height 100%
+    .swiper-pagination-bullets
       bottom 0
-      right 0
-      color #fff
-      font-size 30px
-      cursor pointer
-.workCards-enter-active, .workCards-leave-active
-  transition all .5s ease-in
-.workCards-enter,.workCards-leave-to
-  opacity 0.5
-.workCards-enter-to,.workCards-leave
-  opacity 1
-@media screen and (max-width:787px)
+@media screen and (max-width:767px)
   .work
-    padding-top 30px
-    .workSquare
-      box-sizing border-box
-      padding 0 10px
-      width 100%
-      height 70%
-      .main .workCard
-        width 40%
+    width 90%
+    padding-top 0
+    .swiper-container
+      padding-right 20px
+      padding-bottom 20px
+      .swiper-slide
         height 150px
-        margin 10px
-      .up-down
-        bottom -40px
-        font-size 20px
+        .workCard
+          width 100%
+          height 100%
 </style>

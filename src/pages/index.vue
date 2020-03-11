@@ -90,17 +90,16 @@ export default {
       &:hover
         color rgba(255,255,255,0.8)
 .cards-enter-active, .cards-leave-active
-  transition all .5s ease-in
+  transition all .3s ease-in
 .cards-enter
   opacity 0
-  transform translateX(10%)
+  transform translate3d(10%, 0, 0)
 .cards-leave-to
   opacity 0
-  transform translateX(-10%)
+  transform translate3d(-10%, 0, 0) 
 .cards-enter-to,.cards-leave
   opacity 1
-  transform translateX(0)
-
+  transform translate3d(0, 0, 0) 
 .clear
   animation clear 1s ease-in
 @keyframes clear {

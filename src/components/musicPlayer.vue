@@ -34,10 +34,9 @@ export default {
       songs: [
         {
           id: 0,
-          author: "そらる,まふまふ",
-          name: "前前前世",
-          src:
-            "http://music.xichi.xyz/homepage/%E3%81%9D%E3%82%89%E3%82%8B%2C%E3%81%BE%E3%81%B5%E3%81%BE%E3%81%B5%20-%20%E5%89%8D%E5%89%8D%E5%89%8D%E4%B8%96.mp3"
+          author: "米津玄師,菅田将暉",
+          name: "灰色と青",
+          src: "http://music.xichi.xyz/homepage/%E7%B1%B3%E6%B4%A5%E7%8E%84%E5%B8%AB%2C%E8%8F%85%E7%94%B0%E5%B0%86%E6%9A%89%20-%20%E7%81%B0%E8%89%B2%E3%81%A8%E9%9D%92.mp3"
         },
         {
           id: 1,
@@ -71,13 +70,14 @@ export default {
         },
         {
           id:6,
-          author: "米津玄師,菅田将暉",
-          name: "灰色と青",
-          src: "http://music.xichi.xyz/homepage/%E7%B1%B3%E6%B4%A5%E7%8E%84%E5%B8%AB%2C%E8%8F%85%E7%94%B0%E5%B0%86%E6%9A%89%20-%20%E7%81%B0%E8%89%B2%E3%81%A8%E9%9D%92.mp3"
+          author: "そらる,まふまふ",
+          name: "前前前世",
+          src:
+            "http://music.xichi.xyz/homepage/%E3%81%9D%E3%82%89%E3%82%8B%2C%E3%81%BE%E3%81%B5%E3%81%BE%E3%81%B5%20-%20%E5%89%8D%E5%89%8D%E5%89%8D%E4%B8%96.mp3"
         }
       ],
       currentSong:
-        "http://music.xichi.xyz/homepage/%E3%81%9D%E3%82%89%E3%82%8B%2C%E3%81%BE%E3%81%B5%E3%81%BE%E3%81%B5%20-%20%E5%89%8D%E5%89%8D%E5%89%8D%E4%B8%96.mp3",
+        "http://music.xichi.xyz/homepage/%E7%B1%B3%E6%B4%A5%E7%8E%84%E5%B8%AB%2C%E8%8F%85%E7%94%B0%E5%B0%86%E6%9A%89%20-%20%E7%81%B0%E8%89%B2%E3%81%A8%E9%9D%92.mp3",
       currentIndex: 0,
       audioState: false
     };

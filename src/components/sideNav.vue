@@ -41,9 +41,10 @@ export default {
   padding 1rem
   transform translateY(-60%)
   font .5rem POWER-SELL
-  line-height 2rem
   color rgba(255,255,255,0.3)
   cursor pointer
+  .tab
+    margin 1rem 0
   .tab:hover, .active
     color rgba(255,255,255,0.8)
 @media screen and (max-width: 767px)
@@ -51,9 +52,10 @@ export default {
     position absolute
     top 20px
     left 50%
+    padding-left 40px
     transform translateX(-50%)
     display flex
     .tab
       font-size 16px
-      padding-right 25px
+      padding-right 40px
 </style>
