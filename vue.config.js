@@ -2,6 +2,10 @@ const path = require('path')
 function resolve(dir) {
   return path.join(__dirname, './', dir)
 }
+
+//Analyzer
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 module.exports = {
   publicPath: './', // 默认'/'，部署应用包时的基本 URL
   outputDir: 'dist',
@@ -9,7 +13,15 @@ module.exports = {
   runtimeCompiler: true, // 是否使用包含运行时编译器的 Vue 构建版本
   productionSourceMap: false, // 生产环境的 source map
   configureWebpack: config => {
-
+    const myConfig = {}
+    if (process.env.NODE_ENV === 'production'){
+      //analyzer
+      myConfig.plugins = []
+      myConfig.plugins.push(
+        new BundleAnalyzerPlugin()
+      )
+    }
+    return myConfig
   },
   chainWebpack: config => {
     config.resolve.alias

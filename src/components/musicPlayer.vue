@@ -8,7 +8,10 @@
       crossOrigin="anonymous"
     ></audio>
     <!-- crossOrigin='anonymous' 支持跨域  -->
-    <div class="mp3btn paused" @click="playMusic" ref="mp3btn"></div>
+    <div class="mp3btn-wrap">
+      <div class="mp3btn paused" @click="playMusic" ref="mp3btn"></div>
+      <div class="music-list-wrap"></div>
+    </div>
     <canvas id="canvas" ref="canvas"></canvas>
     <div class="nav">
       <div class="pre" @click="playPreSong">←</div>
@@ -31,57 +34,15 @@ export default {
   },
   data() {
     return {
-      songs: [
-        {
-          id: 0,
-          author: "米津玄師,菅田将暉",
-          name: "灰色と青",
-          src: "http://music.xichi.xyz/homepage/%E7%B1%B3%E6%B4%A5%E7%8E%84%E5%B8%AB%2C%E8%8F%85%E7%94%B0%E5%B0%86%E6%9A%89%20-%20%E7%81%B0%E8%89%B2%E3%81%A8%E9%9D%92.mp3"
-        },
-        {
-          id: 1,
-          author: "Eagles",
-          name: "Hotel California",
-          src: "http://music.xichi.xyz/homepage/Eagles - Hotel California.mp3"
-        },
-        {
-          id: 2,
-          author: "Taylor Swift",
-          name: "Blank Space",
-          src: "http://music.xichi.xyz/homepage/Taylor Swift - Blank Space.mp3"
-        },
-        {
-          id: 3,
-          author: "Kendrick Lamar",
-          name: "DNA",
-          src: "http://music.xichi.xyz/homepage/Kendrick Lamar - DNA.mp3"
-        },
-        {
-          id: 4,
-          author: "P!nk",
-          name: "Try",
-          src: "http://music.xichi.xyz/homepage/P!nk - Try.mp3"
-        },
-        {
-          id: 5,
-          author: "Taylor Swift",
-          name: "Clean",
-          src: "http://music.xichi.xyz/homepage/Taylor%20Swift%20-%20Clean.mp3"
-        },
-        {
-          id:6,
-          author: "そらる,まふまふ",
-          name: "前前前世",
-          src:
-            "http://music.xichi.xyz/homepage/%E3%81%9D%E3%82%89%E3%82%8B%2C%E3%81%BE%E3%81%B5%E3%81%BE%E3%81%B5%20-%20%E5%89%8D%E5%89%8D%E5%89%8D%E4%B8%96.mp3"
-        }
-      ],
-      currentSong:
-        "http://music.xichi.xyz/homepage/%E7%B1%B3%E6%B4%A5%E7%8E%84%E5%B8%AB%2C%E8%8F%85%E7%94%B0%E5%B0%86%E6%9A%89%20-%20%E7%81%B0%E8%89%B2%E3%81%A8%E9%9D%92.mp3",
+      songList: [],
+      songs: [],
+      currentSong: "",
+      currentSongListId: "",
       currentIndex: 0,
       audioState: false
     };
   },
+  computed: {},
   methods: {
     nextsong() {
       this.currentIndex = ++this.currentIndex % this.songs.length;
@@ -195,6 +156,42 @@ export default {
 
       //part7: 播放声音
       //audio.play();
+    },
+    async getSongList() {
+      const { data: songListData } = await this.$http.get(
+        "http://api.xichi.xyz:3000/personalized?limit=10"
+      );
+      songListData.result.forEach(item => {
+        let itemInfo = {};
+        itemInfo["id"] = item["id"];
+        itemInfo["name"] = item["name"];
+        this.songList.push(itemInfo);
+      });
+      this.currentSongListId = this.songList[0]["id"];
+      const { data: songsData } = await this.$http.get(
+        "http://api.xichi.xyz:3000/playlist/detail?id=" + this.currentSongListId
+      );
+      songsData.playlist.tracks.forEach(async item => {
+        let songInfo = {};
+        songInfo["id"] = item["id"];
+        songInfo["name"] = item["name"];
+        songInfo["author"] = item["ar"][0]["name"];
+        let { data: checkSongsData } = await this.$http.get(
+          "http://api.xichi.xyz:3000/check/music?id=" + item["id"]
+        );
+        if (checkSongsData.success) {
+          let { data: songsData } = await this.$http.get(
+            "http://api.xichi.xyz:3000/song/url?id=" + item["id"]
+          );
+          songInfo["src"] = songsData.data[0].url;
+          this.songs.push(songInfo);
+          this.currentSong = songInfo["src"];
+        }
+      });
+      //this.currentSong = this.songs[0]["src"];
+    },
+    async getSongs() {
+      /* res.data */
     }
   },
   mounted() {
@@ -207,23 +204,41 @@ export default {
         this.$options.methods.audioVisualization.bind(this)();
       }
     };
+    this.getSongList();
   }
 };
 </script>
 
 <style lang="stylus" scoped>
 .musicPlayer
-  .mp3btn
+  .mp3btn-wrap
     position absolute
     top 20px
     right 20px
-    width 30px
-    height 30px
-    background-image url('http://njupt.xichi.xyz/icon/music.png')
-    background-size 100% 100%
-    cursor pointer
-    animation rotate 2s linear infinite
-    transition all 2s ease-in
+    .mp3btn
+      width 30px
+      height 30px
+      background-image url('http://njupt.xichi.xyz/icon/music.png')
+      background-size 100% 100%
+      cursor pointer
+      animation rotate 2s linear infinite
+      transition all 1s ease-in
+    &:hover
+      .music-list-wrap
+        position absolute
+        top 20%
+        right calc(100% + 20px)
+        width 150px
+        height 200px
+        border-radius 10px
+        background-color rgba(0,0,0,.5)
+        &:before
+          content ""
+          position absolute
+          top 10px
+          right -15px
+          border solid 5px transparent
+          border-left solid 10px rgba(0,0,0,.5)
   .chooseBox
     font-size 12px
   #canvas
