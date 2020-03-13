@@ -10,7 +10,14 @@
     <!-- crossOrigin='anonymous' 支持跨域  -->
     <div class="mp3btn-wrap">
       <div class="mp3btn paused" @click="playMusic" ref="mp3btn"></div>
-      <div class="music-list-wrap"></div>
+      <div class="music-list-wrap">
+        <div class="header">今日推荐歌单 ∨</div>
+        <ul class="music-list">
+          <li v-for="(item, i) in songList" :key="i" :class="[{ active: i === currentSongListIndex }, 'songList']" @click="getSongs(i)">
+            {{ item.name }}
+          </li>
+        </ul>
+      </div>
     </div>
     <canvas id="canvas" ref="canvas"></canvas>
     <div class="nav">
@@ -37,8 +44,9 @@ export default {
       songList: [],
       songs: [],
       currentSong: "",
-      currentSongListId: "",
       currentIndex: 0,
+      currentSongListId: "",
+      currentSongListIndex: 0,
       audioState: false
     };
   },
@@ -168,9 +176,14 @@ export default {
         this.songList.push(itemInfo);
       });
       this.currentSongListId = this.songList[0]["id"];
+      this.$options.methods.getSongs.bind(this)(0);
+    },
+    async getSongs(i){
+      this.currentSongListIndex = i;
       const { data: songsData } = await this.$http.get(
-        "http://api.xichi.xyz:3000/playlist/detail?id=" + this.currentSongListId
+        "http://api.xichi.xyz:3000/playlist/detail?id=" + this.songList[i]["id"]
       );
+      this.songs = [];
       songsData.playlist.tracks.forEach(async item => {
         let songInfo = {};
         songInfo["id"] = item["id"];
@@ -188,10 +201,6 @@ export default {
           this.currentSong = songInfo["src"];
         }
       });
-      //this.currentSong = this.songs[0]["src"];
-    },
-    async getSongs() {
-      /* res.data */
     }
   },
   mounted() {
@@ -215,7 +224,10 @@ export default {
     position absolute
     top 20px
     right 20px
+    width 40px
+    height 40px
     .mp3btn
+      float right
       width 30px
       height 30px
       background-image url('http://njupt.xichi.xyz/icon/music.png')
@@ -223,13 +235,16 @@ export default {
       cursor pointer
       animation rotate 2s linear infinite
       transition all 1s ease-in
+    .songList, .header
+      display none
     &:hover
       .music-list-wrap
         position absolute
         top 20%
-        right calc(100% + 20px)
+        right calc(100% + 5px)
         width 150px
         height 200px
+        padding 10px
         border-radius 10px
         background-color rgba(0,0,0,.5)
         &:before
@@ -239,6 +254,28 @@ export default {
           right -15px
           border solid 5px transparent
           border-left solid 10px rgba(0,0,0,.5)
+        .music-list
+          overflow hidden
+          display flex
+          flex-direction column
+          .active
+            color rgba(255,255,255,0.9)
+            animation 5s wordsLoop linear infinite normal
+          .songList
+            display inline-block
+            color rgba(255,255,255,0.8)
+            text-align left
+            font-size 12px
+            line-height 18px
+            white-space nowrap
+            &:hover
+              animation 5s wordsLoop linear infinite normal
+        .header
+          display block
+          margin-bottom 5px
+          font-size 13px
+          font-weight bold
+          text-align left
   .chooseBox
     font-size 12px
   #canvas
@@ -268,6 +305,17 @@ export default {
     transform:rotate(360deg);
   }
 }
+@keyframes wordsLoop {
+    0% {
+        transform: translateX(0px);
+        -webkit-transform: translateX(0px);
+    }
+    100% {
+        transform: translateX(-100%);
+        -webkit-transform: translateX(-100%);
+    }
+}
+
 .paused
   background-image url('http://njupt.xichi.xyz/icon/stopmusic.png') !important
   animation-play-state paused !important

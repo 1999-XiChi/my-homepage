@@ -5,6 +5,8 @@ function resolve(dir) {
 
 //Analyzer
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+//去掉注释
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   publicPath: './', // 默认'/'，部署应用包时的基本 URL
@@ -15,10 +17,26 @@ module.exports = {
   configureWebpack: config => {
     const myConfig = {}
     if (process.env.NODE_ENV === 'production'){
-      //analyzer
       myConfig.plugins = []
+      //analyzer
       myConfig.plugins.push(
         new BundleAnalyzerPlugin()
+      )
+      // 去掉注释
+      myConfig.plugins.push(
+        new UglifyJsPlugin({
+          uglifyOptions: {
+            output: {
+              comments: false, // 去掉注释
+            },
+            compress: {
+              warnings: false,
+              drop_console: true,
+              drop_debugger: false,
+              pure_funcs: ['console.log']//移除console
+          }
+          }
+        })
       )
     }
     return myConfig

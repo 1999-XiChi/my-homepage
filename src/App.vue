@@ -17,6 +17,10 @@ body {
   padding: 0;
   -webkit-tap-highlight-color:transparent;
 }
+ul {
+  margin: 0;
+  padding: 0;
+}
 li {
   list-style: none;
 }
