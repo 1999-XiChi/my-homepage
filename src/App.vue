@@ -15,7 +15,8 @@ export default {
 body {
   margin: 0;
   padding: 0;
-  -webkit-tap-highlight-color:transparent;
+  -webkit-tap-highlight-color:transparent;  /*取消移动端点击闪烁*/
+  touch-action: manipulation;  /* 解决安卓移动端click事件有300ms延迟 */
 }
 ul {
   margin: 0;

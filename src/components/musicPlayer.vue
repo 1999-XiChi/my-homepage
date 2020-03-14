@@ -4,6 +4,7 @@
       :src="currentSong"
       autoplay
       ref="audio"
+      class="audio"
       @ended="nextsong()"
       crossOrigin="anonymous"
     ></audio>
@@ -13,7 +14,12 @@
       <div class="music-list-wrap">
         <div class="header">今日推荐歌单 ∨</div>
         <ul class="music-list">
-          <li v-for="(item, i) in songList" :key="i" :class="[{ active: i === currentSongListIndex }, 'songList']" @click="getSongs(i)">
+          <li
+            v-for="(item, i) in songList"
+            :key="i"
+            :class="[{ active: i === currentSongListIndex }, 'songList']"
+            @click="getSongs(i)"
+          >
             {{ item.name }}
           </li>
         </ul>
@@ -27,6 +33,12 @@
         }}<span class="author">--{{ songs[currentIndex].author }}</span>
       </div>
       <div class="next" @click="playNextSong">→</div>
+      <div class="volume-wrap" @click="changeVolume">
+        <div class="volume">
+          <div class="circle" ref="circle"></div>
+          <!-- <input type="text" v-model="volume" @keyup.enter="changeVolume" /> -->
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -43,6 +55,7 @@ export default {
     return {
       songList: [],
       songs: [],
+      volume: .7,
       currentSong: "",
       currentIndex: 0,
       currentSongListId: "",
@@ -51,7 +64,18 @@ export default {
     };
   },
   computed: {},
+  watch: {
+  },
   methods: {
+    changeVolume(e){
+      let audio = this.$refs.audio;
+      let volume = document.querySelector(".volume");
+      let wholeVolume = document.querySelector(".volume-wrap");
+      let width = e.offsetX;
+      this.volume = width / wholeVolume.clientWidth;
+      volume.style.width = width + 'px';
+      audio.volume = this.volume;
+    },
     nextsong() {
       this.currentIndex = ++this.currentIndex % this.songs.length;
       this.currentSong = this.songs[this.currentIndex].src;
@@ -60,22 +84,17 @@ export default {
       this.currentIndex--;
       if (this.currentIndex === -1) this.currentIndex = this.songs.length - 1;
       this.currentSong = this.songs[this.currentIndex].src;
-      let mp3btn = this.$refs.mp3btn;
-      mp3btn.classList.add("running");
-      mp3btn.classList.remove("paused");
-      this.$options.methods.audioVisualization.bind(this)();
+      this.$options.methods.playMusic.bind(this)();
     },
     playNextSong() {
       this.currentIndex = ++this.currentIndex % this.songs.length;
       this.currentSong = this.songs[this.currentIndex].src;
-      let mp3btn = this.$refs.mp3btn;
-      mp3btn.classList.add("running");
-      mp3btn.classList.remove("paused");
-      this.$options.methods.audioVisualization.bind(this)();
+      this.$options.methods.playMusic.bind(this)();
     },
     playMusic() {
       let audio = this.$refs.audio;
       let mp3btn = this.$refs.mp3btn;
+      //console.log(this.$refs.audio);
       if (audio.paused) {
         audio.play();
         mp3btn.classList.add("running");
@@ -178,7 +197,7 @@ export default {
       this.currentSongListId = this.songList[0]["id"];
       this.$options.methods.getSongs.bind(this)(0);
     },
-    async getSongs(i){
+    async getSongs(i) {
       this.currentSongListIndex = i;
       const { data: songsData } = await this.$http.get(
         "http://api.xichi.xyz:3000/playlist/detail?id=" + this.songList[i]["id"]
@@ -204,16 +223,60 @@ export default {
     }
   },
   mounted() {
-    window.onload = () => {
-      var audio = this.$refs.audio;
-      let mp3btn = this.$refs.mp3btn;
-      if (!audio.paused) {
-        mp3btn.classList.add("running");
-        mp3btn.classList.remove("paused");
-        this.$options.methods.audioVisualization.bind(this)();
-      }
-    };
     this.getSongList();
+    //this.changeVolume();
+    this.playMusic();
+    
+
+/*     //获取元素
+    var dv = document.getElementById("dv");
+    var x = 0;
+    var y = 0;
+    var l = 0;
+    var t = 0;
+    var isDown = false;
+    //鼠标按下事件
+    console.log(dv, this.$refs.audio);
+    dv.onmousedown = function(e) {
+
+      console.log('111');
+
+      //获取x坐标和y坐标
+      x = e.clientX;
+      y = e.clientY;
+
+      //获取左部和顶部的偏移量
+      l = dv.offsetLeft;
+      t = dv.offsetTop;
+      //开关打开
+      isDown = true;
+      //设置样式
+      dv.style.cursor = "move";
+    };
+    //鼠标移动
+    window.onmousemove = function(e) {
+
+      console.log('222');
+
+      if (isDown == false) {
+        return;
+      }
+      //获取x和y
+      var nx = e.clientX;
+      var ny = e.clientY;
+      //计算移动后的左偏移量和顶部的偏移量
+      var nl = nx - (x - l);
+      var nt = ny - (y - t);
+
+      dv.style.left = nl + "px";
+      dv.style.top = nt + "px";
+    };
+    //鼠标抬起事件
+    dv.onmouseup = function() {
+      //开关关闭
+      isDown = false;
+      dv.style.cursor = "default";
+    }; */
   }
 };
 </script>
@@ -279,11 +342,12 @@ export default {
   .chooseBox
     font-size 12px
   #canvas
-    width 50%
+    width 40%
     height 150px
     margin 0 auto
     margin-top 20px
   .nav
+    position relative
     width 50%
     margin 0 auto
     font .5rem POWER-SELL
@@ -297,6 +361,32 @@ export default {
     .author
       padding-left 1rem
       font-size .3rem
+    .volume-wrap
+      position absolute
+      top 0
+      left 50%
+      transform translate(-50%, 0)
+      height 5px
+      width 40%
+      background-color rgba(255,255,255,0.3)
+      border-radius 1.5px
+      .volume
+        position relative
+        height 100%
+        width 70%
+        background-color rgba(#0f4c81,0.5)
+        border-radius 1.5px
+        transition all .2s linear
+        .circle
+          position absolute
+          top -50%
+          right 0
+          transform translate(50%, -1px)
+          width 10px
+          height 10px
+          border 1px solid rgba(255,255,255,0.8)
+          border-radius 50%
+          background-color rgba(#0f4c81,0.8)
 @keyframes rotate {
   from{
     transform:rotate(0);
@@ -328,4 +418,13 @@ export default {
       width 90%
     .nav
       width 90%
+</style>
+<style>
+#dv {
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+  border-radius: 50%;
+  position: absolute;
+}
 </style>
