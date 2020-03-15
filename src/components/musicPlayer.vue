@@ -33,10 +33,18 @@
         }}<span class="author">--{{ songs[currentIndex].author }}</span>
       </div>
       <div class="next" @click="playNextSong">→</div>
-      <div class="volume-wrap" @click="changeVolume">
-        <div class="volume">
-          <div class="circle" ref="circle"></div>
-          <!-- <input type="text" v-model="volume" @keyup.enter="changeVolume" /> -->
+      <div class="volume-wrap" ref="volumeWrap" @click="changeVolume">
+        <img
+          class="volume-icon"
+          :src="
+            volume !== 0
+              ? 'http://njupt.xichi.xyz/homepage/icon/volume.png'
+              : 'http://njupt.xichi.xyz/homepage/icon/volume-disable.png'
+          "
+          @click.stop="mute"
+        />
+        <div class="volume" ref="volume">
+          <div class="circle"></div>
         </div>
       </div>
     </div>
@@ -55,7 +63,8 @@ export default {
     return {
       songList: [],
       songs: [],
-      volume: .7,
+      volume: 0.7,
+      lastVolume: 0.7,
       currentSong: "",
       currentIndex: 0,
       currentSongListId: "",
@@ -64,16 +73,30 @@ export default {
     };
   },
   computed: {},
-  watch: {
-  },
+  watch: {},
   methods: {
-    changeVolume(e){
+    mute(){
       let audio = this.$refs.audio;
-      let volume = document.querySelector(".volume");
-      let wholeVolume = document.querySelector(".volume-wrap");
+      let volume = this.$refs.volume;
+      let wholeVolume = this.$refs.volumeWrap;
+      if(this.volume === 0){
+        this.volume = this.lastVolume;
+        volume.style.width = this.lastVolume*wholeVolume.clientWidth + "px";
+        audio.volume = this.volume;
+      }else{
+        this.lastVolume = this.volume;
+        this.volume = 0;
+        volume.style.width = "0px";
+        audio.volume = this.volume;
+      }
+    },
+    changeVolume(e) {
+      let audio = this.$refs.audio;
+      let volume = this.$refs.volume;
+      let wholeVolume = this.$refs.volumeWrap;
       let width = e.offsetX;
       this.volume = width / wholeVolume.clientWidth;
-      volume.style.width = width + 'px';
+      volume.style.width = width + "px";
       audio.volume = this.volume;
     },
     nextsong() {
@@ -226,9 +249,8 @@ export default {
     this.getSongList();
     //this.changeVolume();
     this.playMusic();
-    
 
-/*     //获取元素
+    /*     //获取元素
     var dv = document.getElementById("dv");
     var x = 0;
     var y = 0;
@@ -346,6 +368,7 @@ export default {
     height 150px
     margin 0 auto
     margin-top 20px
+    margin-left 50px
   .nav
     position relative
     width 50%
@@ -367,9 +390,16 @@ export default {
       left 50%
       transform translate(-50%, 0)
       height 5px
-      width 40%
+      width 150px
       background-color rgba(255,255,255,0.3)
       border-radius 1.5px
+      .volume-icon
+        position absolute
+        top 50%
+        left 0
+        transform translate(-150%, -50%)
+        width 15px
+        height 15px
       .volume
         position relative
         height 100%

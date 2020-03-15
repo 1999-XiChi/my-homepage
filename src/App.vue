@@ -17,6 +17,7 @@ body {
   padding: 0;
   -webkit-tap-highlight-color:transparent;  /*取消移动端点击闪烁*/
   touch-action: manipulation;  /* 解决安卓移动端click事件有300ms延迟 */
+  -ms-touch-action: manipulation;
 }
 ul {
   margin: 0;
