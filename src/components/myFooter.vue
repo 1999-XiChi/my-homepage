@@ -47,7 +47,9 @@ export default {
       window.open(url, "_blank");
     }
   },
-  mounted() {}
+  mounted() {
+
+  }
 };
 </script>
 

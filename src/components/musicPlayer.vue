@@ -2,10 +2,10 @@
   <div class="musicPlayer">
     <audio
       :src="currentSong"
-      autoplay
+      preload
       ref="audio"
       class="audio"
-      @ended="nextsong()"
+      @ended="playNextSong()"
       crossOrigin="anonymous"
     ></audio>
     <!-- crossOrigin='anonymous' 支持跨域  -->
@@ -44,7 +44,7 @@
           @click.stop="mute"
         />
         <div class="volume" ref="volume">
-          <div class="circle"></div>
+          <div class="circle" ref="circle"></div>
         </div>
       </div>
     </div>
@@ -53,12 +53,6 @@
 
 <script>
 export default {
-  props: {
-    visualize: {
-      type: Boolean,
-      default: true
-    }
-  },
   data() {
     return {
       songList: [],
@@ -69,21 +63,22 @@ export default {
       currentIndex: 0,
       currentSongListId: "",
       currentSongListIndex: 0,
-      audioState: false
+      audioState: false,
+      changeValue: null
     };
   },
   computed: {},
   watch: {},
   methods: {
-    mute(){
+    mute() {
       let audio = this.$refs.audio;
       let volume = this.$refs.volume;
       let wholeVolume = this.$refs.volumeWrap;
-      if(this.volume === 0){
+      if (this.volume === 0) {
         this.volume = this.lastVolume;
-        volume.style.width = this.lastVolume*wholeVolume.clientWidth + "px";
+        volume.style.width = this.lastVolume * wholeVolume.clientWidth + "px";
         audio.volume = this.volume;
-      }else{
+      } else {
         this.lastVolume = this.volume;
         this.volume = 0;
         volume.style.width = "0px";
@@ -99,25 +94,26 @@ export default {
       volume.style.width = width + "px";
       audio.volume = this.volume;
     },
-    nextsong() {
-      this.currentIndex = ++this.currentIndex % this.songs.length;
-      this.currentSong = this.songs[this.currentIndex].src;
-    },
     playPreSong() {
       this.currentIndex--;
       if (this.currentIndex === -1) this.currentIndex = this.songs.length - 1;
       this.currentSong = this.songs[this.currentIndex].src;
-      this.$options.methods.playMusic.bind(this)();
+      this.$nextTick(function() {
+        // DOM 更新了
+        this.$options.methods.playMusic.bind(this)();
+      });
     },
     playNextSong() {
       this.currentIndex = ++this.currentIndex % this.songs.length;
       this.currentSong = this.songs[this.currentIndex].src;
-      this.$options.methods.playMusic.bind(this)();
+      this.$nextTick(function() {
+        // DOM 更新了
+        this.$options.methods.playMusic.bind(this)();
+      });
     },
     playMusic() {
       let audio = this.$refs.audio;
       let mp3btn = this.$refs.mp3btn;
-      //console.log(this.$refs.audio);
       if (audio.paused) {
         audio.play();
         mp3btn.classList.add("running");
@@ -127,6 +123,7 @@ export default {
         mp3btn.classList.add("paused");
         mp3btn.classList.remove("running");
       }
+      audio.volume = this.volume;
       this.$options.methods.audioVisualization.bind(this)();
     },
     audioVisualization() {
@@ -245,61 +242,13 @@ export default {
       });
     }
   },
-  mounted() {
+  created() {
     this.getSongList();
-    //this.changeVolume();
-    this.playMusic();
-
-    /*     //获取元素
-    var dv = document.getElementById("dv");
-    var x = 0;
-    var y = 0;
-    var l = 0;
-    var t = 0;
-    var isDown = false;
-    //鼠标按下事件
-    console.log(dv, this.$refs.audio);
-    dv.onmousedown = function(e) {
-
-      console.log('111');
-
-      //获取x坐标和y坐标
-      x = e.clientX;
-      y = e.clientY;
-
-      //获取左部和顶部的偏移量
-      l = dv.offsetLeft;
-      t = dv.offsetTop;
-      //开关打开
-      isDown = true;
-      //设置样式
-      dv.style.cursor = "move";
-    };
-    //鼠标移动
-    window.onmousemove = function(e) {
-
-      console.log('222');
-
-      if (isDown == false) {
-        return;
-      }
-      //获取x和y
-      var nx = e.clientX;
-      var ny = e.clientY;
-      //计算移动后的左偏移量和顶部的偏移量
-      var nl = nx - (x - l);
-      var nt = ny - (y - t);
-
-      dv.style.left = nl + "px";
-      dv.style.top = nt + "px";
-    };
-    //鼠标抬起事件
-    dv.onmouseup = function() {
-      //开关关闭
-      isDown = false;
-      dv.style.cursor = "default";
-    }; */
-  }
+  },
+  updated() {
+    //console.log(this.$refs.circle, this.$refs, document.querySelector('.volume'));
+  },
+  mounted() {}
 };
 </script>
 
