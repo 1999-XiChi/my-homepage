@@ -9,6 +9,7 @@
         <div id="busuanzi_container_site_uv" class="uv">
            本站访客数<span id="busuanzi_value_site_uv"></span>人次
         </div>
+        <div class="record"><a href="http://www.beian.miit.gov.cn">浙ICP备19042074号-1</a></div>
         <img src="../assets/miku.png" alt="" />
       </div>
       <div class="links">
@@ -90,8 +91,8 @@ export default {
       img
         display block
         margin 0 auto
-        width 1.4rem
-        height auto
+        width auto
+        height 1rem
 @media screen and (max-width: 767px)
   .footer-wrap
     .footer
