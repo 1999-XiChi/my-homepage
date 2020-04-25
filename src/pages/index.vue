@@ -35,7 +35,7 @@ export default {
     },
     async loadSource() {
       //资源预加载
-     let source = new Array(new Image(), new Image(), new Image());
+      let source = new Array(new Image(), new Image(), new Image());
       source[0].src = "http://njupt.xichi.xyz/fontspider/A61.ttf";
       source[1].src = "http://njupt.xichi.xyz/fontspider/POWER%20SELL.ttf";
       source[2].src = "http://njupt.xichi.xyz/homepage/bg.jpg";
@@ -45,9 +45,9 @@ export default {
         this.loaded = false;
         this.$refs.bg.classList.add("clear");
       };
-     setTimeout(()=>{
+      setTimeout(() => {
         this.loaded = false;
-      },3000)
+      }, 3000);
     }
   },
   mounted() {
@@ -96,10 +96,10 @@ export default {
   transform translate3d(10%, 0, 0)
 .cards-leave-to
   opacity 0
-  transform translate3d(-10%, 0, 0) 
+  transform translate3d(-10%, 0, 0)
 .cards-enter-to,.cards-leave
   opacity 1
-  transform translate3d(0, 0, 0) 
+  transform translate3d(0, 0, 0)
 .clear
   animation clear 1s ease-in
 @keyframes clear {

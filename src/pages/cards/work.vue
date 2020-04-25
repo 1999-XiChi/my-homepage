@@ -5,9 +5,25 @@
     </div>
     <!-- swiper -->
     <swiper :options="swiperOption">
-      <swiper-slide v-for="(card, index) in workCards" :key="index">
+      <swiper-slide v-for="(work, index) in workCards" :key="index">
         <work-card class="workCard">
-          {{ card }}
+          <template v-slot>
+            <div class="info">{{ work.info }}</div>
+            <img class="img" :src="work.img" @click="clickFn(work.url)" />
+          </template>
+          <template v-slot:github>
+            <div class="github-wrap">
+              <div class="github-item" v-for="(item, index) in work.github" :key="index">
+                <img
+                  style="display:block;"
+                  src="http://njupt.xichi.xyz/homepage/work/icon/github.png"
+                  class="github-icon"
+                  @click="clickFn(item.url)"
+                />
+                <div style="font-size:12px;color:#666;">{{item.info}}</div>
+              </div>
+            </div>
+          </template>
         </work-card>
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
@@ -23,11 +39,101 @@ export default {
   components: {
     workCard,
     swiper,
-    swiperSlide
+    swiperSlide,
   },
   data() {
     return {
-      workCards: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      workCards: [
+        {
+          img: "http://njupt.xichi.xyz/homepage/work/XiChi%27s%20Blog.png",
+          url: "http://blog.xichi.xyz/",
+          info: "西池的博客",
+          github: [
+            {
+              info: "front",
+              url: "https://github.com/1999-XiChi/1999-XiChi.github.io",
+            },
+          ],
+        },
+        {
+          img: "http://njupt.xichi.xyz/homepage/work/NJUPTMovieClub.png",
+          url: "http://xichi.xyz/test/",
+          info: "南邮影协主页",
+          github: [
+            {
+              info: "front",
+              url: "https://github.com/1999-XiChi/NJUPT-Movie-Club-frontend",
+            },
+            {
+              info: "back",
+              url: "https://github.com/1999-XiChi/NJUPT-Movie-Club-backend",
+            },
+          ],
+        },
+        {
+          img: "http://njupt.xichi.xyz/homepage/work/biyoung.png",
+          url: "http://biyoung.top/",
+          info: "biyoung小程序",
+          github: [
+            {
+              info: "front",
+              url: "https://github.com/1999-XiChi/BiYoung_frontend",
+            },
+            {
+              info: "manage",
+              url: "https://github.com/1999-XiChi/biyoung_manage",
+            },
+          ],
+        },
+        {
+          img: "http://njupt.xichi.xyz/homepage/work/xichi%27s%20api.png",
+          url: "http://api.xichi.xyz/",
+          info: "xichi's api",
+          github: [
+            {
+              info: "demo",
+              url: "https://github.com/1999-XiChi/The-first-meeting-Node.js",
+            },
+            {
+              info: "libaray",
+              url: "https://github.com/1999-XiChi/Library-Management-demo",
+            },
+          ],
+        },
+        {
+          img: "http://njupt.xichi.xyz/homepage/work/thegirl.png",
+          url: "http://www.xichi.xyz/thegirl/",
+          info: "《文学少女》宣传页",
+          github: [
+            {
+              info: "front",
+              url: "https://github.com/1999-XiChi/SummerCode",
+            },
+          ],
+        },
+        {
+          img: "http://njupt.xichi.xyz/homepage/work/managemall.png",
+          url: "http://www.xichi.xyz/manage-mall/",
+          info: "仿移动营业厅的管理后台",
+          github: [
+            {
+              info: "front",
+              url: "https://github.com/1999-XiChi/HelloWorld",
+            },
+          ],
+        },
+        {
+          img: "http://njupt.xichi.xyz/homepage/work/japanclub.png",
+          url: "http://xichi.xyz/japanclub/",
+          info: "南邮日语俱乐部主页",
+          github: [
+            {
+              info: "front",
+              url: "https://github.com/1999-XiChi/HelloWorld",
+            },
+          ],
+        },
+      ],
       swiperOption: {
         slidesPerView: 2,
         slidesPerColumn: 2,
@@ -39,13 +145,17 @@ export default {
             : 55,
         pagination: {
           el: ".swiper-pagination",
-          clickable: true
-        }
-      }
+          clickable: true,
+        },
+      },
     };
   },
-  methods: {},
-  mounted() {}
+  methods: {
+    clickFn(url) {
+      window.open(url, "_blank");
+    },
+  },
+  mounted() {},
 };
 </script>
 
@@ -78,6 +188,35 @@ export default {
         margin 0 auto
         width 80%
         height 100%
+        position relative
+        .info
+          position absolute
+          bottom 20%
+          left 50%
+          transform translate(-50%, 0)
+          font-size 18px
+          z-index 201
+          color #fff
+          text-shadow 5px 2px 6px #000
+        .img
+          position absolute
+          top 0
+          left 0
+          width 100%
+          height 100%
+          border-radius 10px
+          z-index 200
+          cursor pointer
+        .github-wrap
+          position absolute
+          top 10px
+          right 5px
+          .github-item
+            margin-bottom 15px
+            .github-icon
+              width 35px
+              height 35px
+              cursor pointer
     .swiper-pagination-bullets
       bottom 0
 @media screen and (max-width:767px)
@@ -92,4 +231,12 @@ export default {
         .workCard
           width 100%
           height 100%
+          .github-wrap
+            position absolute
+            top 5px
+            right 5px
+            .github-item
+              .github-icon
+                width 20px
+                height 20px
 </style>

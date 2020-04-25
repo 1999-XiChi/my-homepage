@@ -3,7 +3,9 @@
     <div class="card">
       <slot></slot>
     </div>
-    <div class="card-bg-wrap"></div>
+    <div class="card-bg-wrap">
+      <slot name="github"></slot>
+    </div>
   </div>
 </template>
 
@@ -47,11 +49,14 @@ export default {
     transition all .3s linear
     z-index 100
   &:hover .card-bg-wrap
-    width calc(100% + 20px)
+    width calc(100% + 25px)
     height calc(100% + 10px)
-@media screen and (max-width:787px)
+@media screen and (max-width:1024px)
   .card-wrap
+    .card-bg-wrap
+      width calc(100% + 8px)
+      height calc(100% + 3px)
     &:hover .card-bg-wrap
-      width 100%
-      height 100%
+      width calc(100% + 8px)
+      height calc(100% + 3px)
 </style>

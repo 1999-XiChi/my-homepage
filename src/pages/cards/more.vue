@@ -1,6 +1,6 @@
 <template>
   <div>
-    more
+    留言板正在开发ing
   </div>
 </template>
 

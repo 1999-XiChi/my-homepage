@@ -14,7 +14,8 @@
       <transition name="infoCards" tag="div" mode="out-in">
         <div class="main" :key="pageIndex">
           <div class="infoCard" v-for="(infoCard, i) in currentCards" :key="i">
-            {{ infoCard }}
+            <div style="font-size:.6rem;color:#333;">{{ infoCard.info }}</div>
+            <div style="font-size:.3rem;text-align:left;text-indent:2em;color:#666;">{{ infoCard.detail }}</div>
           </div>
         </div>
       </transition>
@@ -29,7 +30,19 @@ export default {
       pageIndex: 0,
       pageCardsCount: 2,
       currentCards: [],
-      infoCards: ["1", "2", "3", "4", "5"]
+      infoCards: [{
+        info: "前端开发者",
+        detail: "目前比较熟悉的前端技术栈是Vue和NodeJs，现在正在学习React和typescript，希望能不断加油吧！大前端就是坠吊的！用最简单的逻辑，能够体会到从UI到后端到运维的全部乐趣（不是"
+      },{
+        info: "画手",
+        detail: "前老二次元。上色就像刷漆，你永远不知道下一笔是什么颜色（笑。至今仍在搞原创的原因是，同人实在画不像啊，不然本冷cp爱好者一定在割大腿肉的路上。"
+      },{
+        info: "捡垃圾大赛金奖得主",
+        detail: "最大的爱好是磕cp，然而因为磕的cp总是过于冷门，不得不开始从垃圾中寻找快乐。每次打开procreate准备产粮时，发现自己画的实在是ooc，不得不改成原创。没错，人生就是这般悲伤QAQ"
+      },{
+        info: "梦想成为剪辑er",
+        detail: "电脑太卡是我偷懒的借口orz\n本人唯一作品:BV17E411j7ZZ"
+      }]
     };
   },
   computed: {
@@ -134,6 +147,7 @@ export default {
         height 40%
         border-radius 20px
         background-color #fff
+        padding 20px 30px
 .infoCards-enter-active, .infoCards-leave-active
   transition all .5s ease-in
 .infoCards-enter,.infoCards-leave-to
