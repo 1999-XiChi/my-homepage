@@ -36,7 +36,7 @@ export default {
         //不需要出现滚动条
         bar.style.display = "none";
       }
-      container.addEventListener('scroll',(e)=>{
+      container.addEventListener("scroll",(e)=>{
         bar.style.top = e.target.scrollTop * rate + "px";
       })
     },
