@@ -6,8 +6,11 @@ import compose from "koa-compose"
 import koaBody from "koa-body"
 import jsonUtil from "koa-json"
 import cors from "@koa/cors"
-import router from "./src/routes/routes"
 import compress from "koa-compress"
+
+import mongoose from "./src/db/index";
+import router from "./src/routes/routes"
+
 
 const app = new koa()
 

@@ -23,7 +23,9 @@
     "koa-helmet": "^5.2.0",
     "koa-json": "^2.0.2",
     "koa-router": "^8.0.8",
-    "koa-static": "^5.0.0"
+    "koa-static": "^5.0.0",
+    "mongoose": "^5.9.13",
+    "saslprep": "^1.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",

@@ -4,7 +4,7 @@
 
    + GET /comments  获取评论列表
    + POST /comments/add 发表评论
-   + POST /comments/reply 回复某条评修改评论
+   + POST /comments/reply 回复某条评
    + DELETE /comments 删除评论
 
    + PUT /comments/like  点赞评论

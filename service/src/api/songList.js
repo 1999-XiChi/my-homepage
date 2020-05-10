@@ -1,9 +1,12 @@
-function a (ctx){
-  ctx.body = {
-    "message": "hello from a"
+class SongListController{
+  constructor(){
+
+  }
+  async songList(ctx){
+    ctx.body = {
+      msg: "hello song list"
+    }
   }
 }
 
-module.exports = {
-  a
-}
+export default new SongListController();
