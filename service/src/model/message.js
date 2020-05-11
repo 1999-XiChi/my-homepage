@@ -3,12 +3,14 @@ import mongoose from "../db/index"
 const Schema = mongoose.Schema;
 
 const MessageSchema = new Schema({
-  "cid": { type: Number },
   "message": { type: String },
-  "date": { type: String },
+  "date": {
+    type: Date,
+    default: Date.now
+  },
   "user": { type: String },
-  "likes": { type: Number },
-  "subMessages": { type: Number }
+  "likes": { type: Number, default: 0 },
+  "subMessages": { type: Array }
 })
 
 const MessageModel = mongoose.model("message", MessageSchema)

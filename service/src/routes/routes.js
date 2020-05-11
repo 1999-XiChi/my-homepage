@@ -1,14 +1,14 @@
-const Router = require("koa-router")
-const combineRoutes = require("koa-combine-routers")
-const message = require("./message")
-const songList = require("./songList")
+import Router from "koa-router"
+import combineRoutes from "koa-combine-routers"
+import message from "./message"
+import songList from "./songList"
 
 const router = new Router()
 const start = router.get("/", ctx=>{
   ctx.body = "HELLO WORLD! HERA ARE THE APIS OF XICHI'S HOMEPAGE!"
 })
 
-module.exports = combineRoutes(
+export default combineRoutes(
   start,
   message,
   songList

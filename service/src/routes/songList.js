@@ -1,8 +1,10 @@
-const Router = require("koa-router")
-import SongListController from "../api/songList"
+import Router from "koa-router"
+import SongListController from "../controller/songList"
 
 const router = new Router()
 
-router.get("/songList", SongListController.songList)
+router.get("/songlist", SongListController.songList)
+router.post("/songlist/add", SongListController.add)
+router.post("/songlist/delete", SongListController.delete)
 
-module.exports = router
+export default router

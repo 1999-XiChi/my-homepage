@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec babel-node main.js",
+    "start": "cross-env NODE_ENV=prod babel-node main.js",
     "dev": "cross-env NODE_ENV=dev nodemon --exec babel-node --inspect main.js",
     "build": "cross-env NODE_ENV=prod webpack --config config/webpack.config.prod.js",
     "webpack:debug": "node --inspect-brk ./node_modules/.bin/webpack --inline --progress"
@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@koa/cors": "^3.0.0",
+    "babel-register": "^6.26.0",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
     "koa-combine-routers": "^4.0.2",

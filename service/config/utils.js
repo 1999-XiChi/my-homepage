@@ -1,8 +1,20 @@
 const path = require("path")
 
-exports.resolve = function resolve(dir){
+exports.resolve = function resolve(dir) {
   return path.join(__dirname, "..", dir)
 }
 
-exports.SERVICE_PATH = exports.resolve("")
+exports.APP_PATH = exports.resolve("")
 exports.DIST_PATH = exports.resolve("dist")
+
+exports.getWebpackResolveConfig = function (customAlias = {}) {
+  const appPath = exports.APP_PATH;
+  return {
+    modules: [appPath, "node_modules"],
+    extensions: [".js", ".json"],
+    alias: {
+      "@": appPath,
+      ...customAlias,
+    },
+  };
+};
