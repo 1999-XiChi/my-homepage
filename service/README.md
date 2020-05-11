@@ -26,3 +26,7 @@
 + `npm install`
 + `npm run build`
 + `pm2 start dist/server.bundle.js`
+
+## 踩坑
+
+webpack打包没有报错，但`nodedist/server.bundle.js`
