@@ -10,7 +10,8 @@ const MessageSchema = new Schema({
   },
   "user": { type: String },
   "likes": { type: Number, default: 0 },
-  "subMessages": { type: Array }
+  "subMessages": { type: Array },
+  "avatar": { type: String, default: "http://njupt.xichi.xyz/homepage/avatar/avatar_girl.png" }
 })
 
 const MessageModel = mongoose.model("message", MessageSchema)

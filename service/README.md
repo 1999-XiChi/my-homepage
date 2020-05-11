@@ -29,4 +29,8 @@
 
 ## 踩坑
 
-webpack打包没有报错，但`nodedist/server.bundle.js`
+webpack打包没有报错，但`node dist/server.bundle.js`报错：
+```bash
+Uncaught TypeError: Cannot assign to read only property’exports‘ of object’#<Object>‘
+```
+代码没毛病，在webpack打包的时候，可以在js文件中混用require和export。但是不能混用import 以及module.exports，需要改之。

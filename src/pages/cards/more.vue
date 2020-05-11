@@ -43,9 +43,22 @@
                 :style="{ resize: 'none' }"
               />
               <div class="submit-btn" :style="{ width: '100%' }">
-                <span class="count-tip">还能输入<span>{{ 140 - message.length }}</span>个字</span>
-                <input class="preview" type="button" value="预览" @click="togglePreview">
-                <input class="submit" type="submit" value="发表留言" />
+                <span class="count-tip"
+                  >还能输入<span>{{ 140 - message.length }}</span
+                  >个字</span
+                >
+                <input
+                  class="preview"
+                  type="button"
+                  value="预览"
+                  @click="togglePreview"
+                />
+                <input
+                  class="submit"
+                  type="submit"
+                  value="发表留言"
+                  @click="addMessage"
+                />
               </div>
             </div>
           </div>
@@ -54,22 +67,56 @@
           </div>
           <div class="message-list">
             <div class="message-card" v-if="preview">
-              <img class="avatar" :src="defaultAvatars[currentAvatarIndex]" alt="">
+              <img
+                class="avatar"
+                :src="defaultAvatars[currentAvatarIndex]"
+                alt=""
+              />
               <div class="main">
                 <div class="head">
-                  <span class="name">{{name}}</span>
-                  <span class="time">{{date}}</span>
+                  <span class="name">{{ name }}</span>
+                  <span class="time">{{ date }}</span>
                 </div>
-                <div class="text" style="word-break: break-all;white-space: pre-wrap;">{{message}}</div>
+                <div
+                  class="text"
+                  style="word-break: break-all;white-space: pre-wrap;"
+                >
+                  {{ message }}
+                </div>
                 <div class="kodos">
-                  <div class="like" @click="toggleLike">{{like? '♥' : '♡'}}</div>
+                  <div class="like" @click="toggleLike">
+                    {{ like ? "♥" : "♡" }}
+                  </div>
                   <div class="reply">回复</div>
                 </div>
               </div>
             </div>
-            <div class="message-card"></div>
-            <div class="message-card"></div>
-            <div class="message-card"></div>
+            <div
+              v-for="(message, index) in messageList"
+              :key="index"
+              class="message-card"
+            >
+              <img class="avatar" :src="message.avatar" alt="" />
+              <div class="main">
+                <div class="head">
+                  <span class="name">{{ message.user }}</span>
+                  <span class="time">{{ message.date }}</span>
+                </div>
+                <div
+                  class="text"
+                  style="word-break: break-all;white-space: pre-wrap;"
+                >
+                  {{ message.message }}
+                </div>
+                <div class="kodos">
+                  <div class="like" @click="toggleLike">
+                    {{ message.like ? "♥" : "♡" }}
+                    {{ message.likes }}
+                  </div>
+                  <div class="reply">回复</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </template>
@@ -79,6 +126,7 @@
 
 <script>
 import scrollView from "_c/base/scrollView";
+import { getAllMessage, addMessage } from "../../api/index";
 export default {
   components: {
     scrollView,
@@ -100,19 +148,47 @@ export default {
       date: "",
       like: false,
       messageList: [],
-      preview: false
+      preview: false,
     };
   },
-  methods:{
-    changeAvatarIndex(index){
+  methods: {
+    changeAvatarIndex(index) {
       this.currentAvatarIndex = index;
     },
-    toggleLike(){
+    toggleLike() {
       this.like = !this.like;
     },
-    togglePreview(){
+    togglePreview() {
       this.preview = !this.preview;
-    }
+    },
+    async getAllMessage() {
+      const { data: messageData } = await getAllMessage();
+      if (messageData.statusCode === 200) {
+        const { msg: messageArray } = messageData;
+        const message = messageArray.map((message) => ({
+          ...message,
+          date: this.$moment(message.date).format("lll"),
+        })).reverse();
+        this.messageList = message;
+      }
+    },
+    async addMessage() {
+      const avatar = this.defaultAvatars[this.currentAvatarIndex];
+      const date = new Date();
+      const { data: result } = await addMessage(
+        this.name,
+        avatar,
+        this.message,
+        date
+      );
+      if (result.statusCode === 200) {
+        this.preview = false;
+      }
+      this.$options.methods.getAllMessage.bind(this)(0);
+    },
+  },
+  created() {
+    this.getAllMessage();
   },
   mounted() {
     this.mobileAgent = /Android|webOS|iPhone|iPod|BlackBerry/i.test(
@@ -200,6 +276,7 @@ export default {
       .message-list
         margin-top 10px
         .message-card
+          padding 10px 0
           min-height 100px
           border-bottom 1px dashed #999
           display flex
