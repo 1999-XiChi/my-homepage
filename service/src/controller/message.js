@@ -44,16 +44,17 @@ class MessageController {
   }
   async reply(ctx, next) {
     try {
-      const { id, subMessage } = ctx.request.body;
-      const result = await Message.updateOne({ _id: id }, {
-        subMessages: subMessage
-      })
+      const { id, subMessage } = ctx.request.body; 
       const message = await Message.findOne({_id: id})
+      const newSubMessage = message.subMessages.concat(subMessage);
+      const result = await Message.updateOne({ _id: id }, {
+        subMessages: newSubMessage
+      })
       if(result.n === 1){
         ctx.body = {
           statusCode: 200,
           success: "成功回复",
-          message: message.subMessages.push(subMessage)
+          message: newSubMessage
         }
       }else{
         ctx.body = {
