@@ -66,7 +66,7 @@
             <span>留言墙</span>
           </div>
           <div class="message-list">
-            <div class="message-card" v-if="preview">
+            <div class="message-card preview-card" v-if="preview">
               <img
                 class="avatar"
                 :src="defaultAvatars[currentAvatarIndex]"
@@ -79,15 +79,25 @@
                 </div>
                 <div
                   class="text"
-                  style="word-break: break-all;white-space: pre-wrap;"
+                  style="word-break: break-all;white-space: pre-line;"
                 >
                   {{ message }}
                 </div>
                 <div class="kodos">
                   <div class="like" @click="toggleLike">
-                    {{ like ? "♥" : "♡" }}
+                    <img
+                      class="like-icon"
+                      :src="
+                        like
+                          ? 'http://njupt.xichi.xyz/homepage/icon/like.png'
+                          : 'http://njupt.xichi.xyz/homepage/icon/unlike.png'
+                      "
+                    />
+                    <span>{{ like === false ? "0" : "1" }}</span>
                   </div>
-                  <div class="reply">回复</div>
+                  <div class="reply-wrap">
+                    <div class="reply">回复</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -104,17 +114,71 @@
                 </div>
                 <div
                   class="text"
-                  style="word-break: break-all;white-space: pre-wrap;"
+                  style="word-break: break-all;white-space: pre-line;"
                 >
                   {{ message.message }}
                 </div>
                 <div class="kodos">
-                  <div class="like" @click="toggleLike">
-                    {{ message.like ? "♥" : "♡" }}
-                    {{ message.likes }}
+                  <div class="like" @click="toggleMessageLike(message)">
+                    <img
+                      class="like-icon"
+                      v-show="message.isLike"
+                      src="http://njupt.xichi.xyz/homepage/icon/like.png"
+                    />
+                    <img
+                      class="like-icon"
+                      v-show="!message.isLike"
+                      src="http://njupt.xichi.xyz/homepage/icon/unlike.png"
+                    />
+                    <span>{{ message.likes }}</span>
                   </div>
-                  <div class="reply">回复</div>
+                  <div class="reply" @click="toggleReplyShown(message)">
+                    <span>回复</span>
+                    <img
+                      class="down-icon"
+                      src="http://njupt.xichi.xyz/homepage/icon/down.png"
+                      alt=""
+                    />
+                  </div>
                 </div>
+                <transition name="reply-dropdown">
+                  <div class="reply-dropdown" v-show="!message.replyHidden">
+                    <div class="reply-box">
+                      <input
+                        v-model="replyName"
+                        type="text"
+                        placeholder="Your Name"
+                      />
+                      <textarea
+                        placeholder="Your Message"
+                        maxlength="140"
+                        v-model="replyMessage"
+                        :style="{ resize: 'none' }"
+                      />
+                      <div class="submit-btn" :style="{ width: '100%' }">
+                        <span class="count-tip"
+                          >还能输入<span>{{ 140 - replyMessage.length }}</span
+                          >个字</span
+                        >
+                        <input
+                          class="submit"
+                          type="submit"
+                          value="回复"
+                          @click="replyTheMessage(message)"
+                        />
+                      </div>
+                    </div>
+                    <div class="subMessage-box" v-for="(msg, i) in message.subMessages" :key="i">
+                      <div class="head">
+                        <span class="name">{{ msg.name }}</span>
+                        <span class="date">{{ msg.date }}</span>
+                      </div>
+                      <div class="message">
+                       {{ msg.message }}
+                      </div>
+                    </div>
+                  </div>
+                </transition>
               </div>
             </div>
           </div>
@@ -126,7 +190,13 @@
 
 <script>
 import scrollView from "_c/base/scrollView";
-import { getAllMessage, addMessage } from "../../api/index";
+import {
+  getAllMessage,
+  addMessage,
+  likeMessage,
+  unlikeMessage,
+  replyMessage
+} from "../../api/index";
 export default {
   components: {
     scrollView,
@@ -149,6 +219,8 @@ export default {
       like: false,
       messageList: [],
       preview: false,
+      replyMessage: "",
+      replyName: "",
     };
   },
   methods: {
@@ -161,14 +233,51 @@ export default {
     togglePreview() {
       this.preview = !this.preview;
     },
+    toggleReplyShown(message) {
+      const replyHidden = message.replyHidden;
+      const id = message.id;
+      this.messageList = this.messageList.map((item) =>
+        id === item.id
+          ? {
+            ...item,
+            replyHidden: !replyHidden
+          }
+          : item
+      );
+    },
+    async toggleMessageLike(message) {
+      const isLike = message.isLike;
+      const id = message.id;
+      const { data: result } = await (isLike
+        ? unlikeMessage(id)
+        : likeMessage(id));
+      await this.$options.methods.getAllMessage.bind(this)();
+      this.messageList = this.messageList.map((item) =>
+        id === item.id
+          ? {
+            ...item,
+            isLike: !isLike,
+          }
+          : item
+      );
+    },
     async getAllMessage() {
       const { data: messageData } = await getAllMessage();
       if (messageData.statusCode === 200) {
         const { msg: messageArray } = messageData;
-        const message = messageArray.map((message) => ({
-          ...message,
-          date: this.$moment(message.date).format("lll"),
-        })).reverse();
+        const message = messageArray
+          .map((message) => ({
+            ...message,
+            id: message._id,
+            date: this.$moment(message.date).format("lll"),
+            subMessages: message.subMessages.map((subMessage)=>({
+              ...subMessage,
+              date: this.$moment(subMessage.date).format("lll")
+            })),
+            isLike: false,
+            replyHidden: true,
+          }))
+          .reverse();
         this.messageList = message;
       }
     },
@@ -184,8 +293,28 @@ export default {
       if (result.statusCode === 200) {
         this.preview = false;
       }
-      this.$options.methods.getAllMessage.bind(this)(0);
+      this.$options.methods.getAllMessage.bind(this)();
     },
+    async replyTheMessage(message){
+      const id = message.id;
+      const {data: result} = await replyMessage(
+        id,
+        {
+          date: new Date(),
+          name: this.replyName,
+          message: this.replyMessage
+        }
+      )
+      await this.$options.methods.getAllMessage.bind(this)();
+      this.messageList = this.messageList.map((item) =>
+        id === item.id
+          ? {
+            ...item,
+            replyHidden: false
+          }
+          : item
+      );
+    }
   },
   created() {
     this.getAllMessage();
@@ -213,7 +342,7 @@ export default {
       padding 10px 10%
       .header
         line-height 30px
-      .new_message
+      .new_message, .reply-box
         input[type=text], textarea
           outline none
           border 1px solid #999
@@ -240,6 +369,7 @@ export default {
         .submit-btn
           display flex
           justify-content flex-end
+          flex-wrap wrap
           .count-tip
             font-size 13px
             line-height 30px
@@ -275,6 +405,8 @@ export default {
           border-radius 10px 10px 0 0
       .message-list
         margin-top 10px
+        .preview-card
+          background-color rgba(#dbdbdb, .5)
         .message-card
           padding 10px 0
           min-height 100px
@@ -282,14 +414,19 @@ export default {
           display flex
           justify-content flex-start
           align-items flex-start
+          &:last-child
+            border none
           .avatar
             width 50px
             height 50px
+            flex-shrink 0
           .main
+            width 100%
             margin-left 10px
             .head
               display flex
               justify-content flex-start
+              flex-wrap wrap
               .name
                 color #2C3E50
                 font-weight bold
@@ -310,17 +447,59 @@ export default {
               justify-content flex-start
               .like
                 color #e91e63
-                font-size 20px
+                font-size 13px
                 cursor pointer
                 line-height 20px
+                .like-icon
+                  width 15px
+                  height 15px
+                  vertical-align text-top
+                > span
+                  margin-left 2px
               .reply
-                margin-left 5px
+                margin-left 20px
                 color #999
                 cursor pointer
                 font-size 12px
                 line-height 20px
-    .box
-      height 500px
+                .down-icon
+                  width 10px
+                  height 10px
+                  vertical-align middle
+                  margin-left 5px
+            .reply-dropdown
+              background-color rgba(219,219,219,0.5)
+              padding 5px
+              width 90%
+              .reply-box
+                input[type=text]
+                  float left
+                  margin-bottom 5px
+              .subMessage-box
+                border-bottom 1px dashed #999
+                &:last-child
+                  border none
+                .head
+                  display flex
+                  justify-content flex-start
+                  flex-wrap wrap
+                  .name
+                    color #2c3e50
+                    font-weight bold
+                    font-size 15px
+                    line-height 20px
+                  .date
+                    margin-left 8px
+                    color #666
+                    font-size 12px
+                    line-height 20px
+                .message
+                    min-height 50px
+                    text-align left
+                    color #2a2e2e
+                    margin 5px 0
+                    word-break break-all
+                    white-space pre-line
 @media screen and (max-width:787px)
   .more
     .message-board
@@ -330,5 +509,13 @@ export default {
             margin 5px 0
             >img
               width 30px
-              height 30px
+              height 30p
+.reply-dropdown-enter-active, .reply-dropdown-leave-active
+  transiton all 5s ease-in-out
+.reply-dropdown-enter-to, .reply-dropdown-leave
+  opacity 1
+  height 100px
+.reply-dropdown-enter,..reply-dropdown-leave-to
+  opacity 0
+  height 0
 </style>

@@ -101,6 +101,21 @@ export default {
           ],
         },
         {
+          img: "http://njupt.xichi.xyz/homepage/work/xichi-demo.png",
+          url: "http://demo.xichi.xyz",
+          info: "xichi's demo",
+          github: [
+            {
+              info: "react",
+              url: "https://github.com/1999-XiChi/react-demos",
+            },
+            {
+              info: "webpack",
+              url: "https://github.com/1999-XiChi/webpack-boilerplate",
+            }
+          ],
+        },
+        {
           img: "http://njupt.xichi.xyz/homepage/work/thegirl.png",
           url: "http://www.xichi.xyz/thegirl/",
           info: "《文学少女》宣传页",
