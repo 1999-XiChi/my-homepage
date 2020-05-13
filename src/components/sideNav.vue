@@ -124,7 +124,7 @@ export default {
     transform translateX(-50%)
     display flex
     .tab
-      font-size 16px
+      font-size 22px
       padding 0 20px
       .icon
         display none

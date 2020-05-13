@@ -7,9 +7,15 @@
       </div>
       <side-nav></side-nav>
       <keep-alive>
-        <transition name="cards" mode="out-in">
+        <!-- Android端跑全局动画太卡了，所以把动画禁掉了 -->
+        <template v-if="userClient">
           <router-view></router-view>
-        </transition>
+        </template>
+        <template v-else>
+          <transition name="cards" mode="out-in">
+            <router-view></router-view>
+          </transition>
+        </template>
       </keep-alive>
     </div>
   </div>
@@ -22,11 +28,12 @@ import myLoading from "_c/myLoading";
 export default {
   components: {
     sideNav,
-    myLoading
+    myLoading,
   },
   data() {
     return {
-      loaded: true
+      loaded: true,
+      userClient: 0  //true为安卓端，false为pc端+iphone
     };
   },
   methods: {
@@ -48,11 +55,12 @@ export default {
       setTimeout(() => {
         this.loaded = false;
       }, 3000);
-    }
+    },
   },
   mounted() {
     this.loadSource();
-  }
+    this.userClient = /Android/i.test(navigator.userAgent)
+  },
 };
 </script>
 

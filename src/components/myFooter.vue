@@ -10,7 +10,7 @@
            本站访客数<span id="busuanzi_value_site_uv"></span>人次
         </div>
         <div class="record"><a href="http://www.beian.miit.gov.cn">浙ICP备19042074号-1</a></div>
-        <img src="../assets/miku.png" alt="" />
+        <img src="../assets/cat.png" alt="" />
       </div>
       <div class="links">
         <div class="title">Links</div>
@@ -27,11 +27,17 @@
         </ul>
       </div>
       <div class="contact-us">
-        <div class="title">Contact Us</div>
-        <ul>
-          <li @click="clickFn('https://github.com/1999-XiChi')">github</li>
-          <li>email</li>
-          <li>QQ</li>
+        <div class="title">Contact Me</div>
+        <ul class="icons">
+          <li @click="clickFn('https://github.com/1999-XiChi')">
+            <img src="../assets/icon/github.png">
+          </li>
+          <li @click="clickFn('https://space.bilibili.com/352509')">
+            <img src="../assets/icon/bilibili.png">
+          </li>
+          <li @click="clickFn('http://wpa.qq.com/msgrd?v=3&uin=474504964&site=qq&menu=yes')">
+            <img src="../assets/icon/qq.png">
+          </li>
         </ul>
       </div>
     </div>
@@ -88,11 +94,23 @@ export default {
       .pv, .uv
         font-size 12px
         color rgba(255,255,255,0.5)
+      .record
+        > a
+          color #ff5722
       img
         display block
         margin 0 auto
         width auto
-        height 1rem
+        height .8rem
+    .contact-us
+      .icons
+        display flex
+        margin-top 10px
+        > li
+          margin-left 10px
+          > img 
+            width 30px
+            height 30px
 @media screen and (max-width: 767px)
   .footer-wrap
     .footer
@@ -102,4 +120,12 @@ export default {
         img
           width 40px
           height auto
+      .contact-us
+        .icons
+          display block
+          > li
+            line-height 0
+            > img 
+              width 20px
+              height 20px
 </style>
