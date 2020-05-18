@@ -41,7 +41,7 @@ export default {
       })
     },
   },
-  mounted(){
+  updated(){
     this.moveScrollBar();
   }
 };
