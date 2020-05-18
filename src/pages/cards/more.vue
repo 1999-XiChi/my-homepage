@@ -3,7 +3,7 @@
     <scroll-view
       class="message-board"
       :width="mobileAgent ? '80%' : '60%'"
-      :height="mobileAgent ? '70%' : '80%'"
+      :height="mobileAgent ? '80%' : '80%'"
       :scrollbarStyle="{ backgroundColor: 'rgba(15, 76, 129, 0.8)' }"
     >
       <template v-slot>
@@ -503,6 +503,7 @@ export default {
 @media screen and (max-width:787px)
   .more
     .message-board
+      margin-top 50px
       .message-content
         .new_message
           .avatar-box

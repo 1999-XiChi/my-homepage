@@ -43,6 +43,11 @@ export default {
   },
   updated(){
     this.moveScrollBar();
+  },
+  mounted(){
+    setTimeout(()=>{
+      this.moveScrollBar()
+    },500)
   }
 };
 </script>
