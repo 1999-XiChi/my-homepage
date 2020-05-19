@@ -31,24 +31,23 @@ export default {
       const barHeight = rate * container.clientHeight;
       if (rate < 1) {
         //需要出现滚动条,并计算滚动条的高度
+        bar.style.display = "block";
         bar.style.height = barHeight + "px";
       } else {
         //不需要出现滚动条
         bar.style.display = "none";
       }
-      container.addEventListener("scroll",(e)=>{
+      container.addEventListener("scroll", (e) => {
         bar.style.top = e.target.scrollTop * rate + "px";
-      })
+      });
     },
   },
-  updated(){
+  updated() {
     this.moveScrollBar();
   },
-  mounted(){
-    setTimeout(()=>{
-      this.moveScrollBar()
-    },500)
-  }
+  mounted() {
+    this.moveScrollBar();
+  },
 };
 </script>
 
@@ -71,4 +70,5 @@ export default {
     overflow auto
     .scroll-content
       width 100%
+      margin-left -9px
 </style>

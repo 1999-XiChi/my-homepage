@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       loaded: true,
-      userClient: 0  //true为安卓端，false为pc端+iphone
+      userClient: 0, //true为安卓端，false为pc端+iphone
     };
   },
   methods: {
@@ -59,7 +59,7 @@ export default {
   },
   mounted() {
     this.loadSource();
-    this.userClient = /Android/i.test(navigator.userAgent)
+    this.userClient = /Android/i.test(navigator.userAgent);
   },
 };
 </script>

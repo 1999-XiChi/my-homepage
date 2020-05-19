@@ -17,6 +17,10 @@ Vue.prototype.$http= axios
 moment.locale("zh-cn"); 
 Vue.prototype.$moment = moment;
 
+//message组件
+import Message from "@/components/message/message.js"
+Vue.prototype.$message = Message;
+
 new Vue({
   router,
   render: h => h(App),

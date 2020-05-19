@@ -251,6 +251,7 @@ export default {
       const { data: result } = await (isLike
         ? unlikeMessage(id)
         : likeMessage(id));
+      this.$message(isLike ? {value:"取消点赞", type:"Danger"} : {value:"悄悄点一个赞~", type: "Info"});
       await this.$options.methods.getAllMessage.bind(this)();
       this.messageList = this.messageList.map((item) =>
         id === item.id
@@ -293,6 +294,7 @@ export default {
       if (result.statusCode === 200) {
         this.preview = false;
       }
+      this.$message({value:"发表成功", type:"Success"});
       this.$options.methods.getAllMessage.bind(this)();
     },
     async replyTheMessage(message){
@@ -314,6 +316,7 @@ export default {
           }
           : item
       );
+      this.$message({value:"回复成功", type:"Success"});
     }
   },
   created() {
@@ -510,7 +513,7 @@ export default {
             margin 5px 0
             >img
               width 30px
-              height 30p
+              height 30px
 .reply-dropdown-enter-active, .reply-dropdown-leave-active
   transiton all 5s ease-in-out
 .reply-dropdown-enter-to, .reply-dropdown-leave

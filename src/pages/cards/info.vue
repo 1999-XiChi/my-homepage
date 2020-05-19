@@ -13,9 +13,9 @@
               src="http://njupt.xichi.xyz/homepage/icon/light_bulb.png"
               width="35"
               height="35"
-              style="vertical-align: text-bottom;margin-right:10px;"
+              style="vertical-align: sub;margin-right:10px;"
             />
-            <span>你好呀~</span>
+            你好呀~
           </div>
           <div class="subtitle">
             我是一名就读于南京邮电大学的大二学生，计科专业。我正在学习前端的漫漫之路上，虽然很菜，但对技术与设计永远拥有最真挚的热情！
@@ -195,6 +195,7 @@ export default {
         flex-direction column
         .info-card
           width 80%
+          margin 0 auto
           margin-bottom 20px
 </style>
 
