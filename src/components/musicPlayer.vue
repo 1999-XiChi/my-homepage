@@ -23,14 +23,37 @@
             {{ item.name }}
           </li>
         </ul>
+        <div class="visitor-song-list" @click="getVistorSongs">
+          <img
+            src="http://njupt.xichi.xyz/homepage/icon/vistor-like.png"
+            width="15"
+            height="15"
+            style="vertical-align:middle;"
+          />
+          访客最爱歌单
+        </div>
       </div>
     </div>
     <canvas id="canvas" ref="canvas"></canvas>
     <div class="nav">
       <div class="pre" @click="playPreSong">←</div>
       <div class="name">
-        {{ songs[currentIndex].name
-        }}<span class="author">--{{ songs[currentIndex].author }}</span>
+        <div class="top">{{ songs[currentIndex].name }}</div>
+        <div class="back">
+          <div class="author">{{ songs[currentIndex].author }}</div>
+          <div class="like" @click="toggleSongLike()">
+            <img
+              class="like-icon"
+              v-show="isLike"
+              src="http://njupt.xichi.xyz/homepage/icon/like.png"
+            />
+            <img
+              class="like-icon"
+              v-show="!isLike"
+              src="http://njupt.xichi.xyz/homepage/icon/unlike.png"
+            />
+          </div>
+        </div>
       </div>
       <div class="next" @click="playNextSong">→</div>
       <div class="volume-wrap" ref="volumeWrap" @click="changeVolume">
@@ -52,11 +75,13 @@
 </template>
 
 <script>
+import { getSongList, addSong } from "../api/index";
 export default {
   data() {
     return {
       songList: [],
       songs: [],
+      vistorSongList: [],
       volume: 0.7,
       lastVolume: 0.7,
       currentSong: "",
@@ -64,7 +89,8 @@ export default {
       currentSongListId: "",
       currentSongListIndex: 0,
       audioState: false,
-      changeValue: null
+      firstEntry: true,
+      isLike: false
     };
   },
   computed: {},
@@ -124,6 +150,7 @@ export default {
         mp3btn.classList.remove("running");
       }
       audio.volume = this.volume;
+      this.isLike = false;
       this.$options.methods.audioVisualization.bind(this)();
     },
     audioVisualization() {
@@ -208,7 +235,7 @@ export default {
       const { data: songListData } = await this.$http.get(
         "http://api.xichi.xyz:3000/personalized?limit=10"
       );
-      songListData.result.forEach(item => {
+      songListData.result.forEach((item) => {
         let itemInfo = {};
         itemInfo["id"] = item["id"];
         itemInfo["name"] = item["name"];
@@ -223,7 +250,8 @@ export default {
         "http://api.xichi.xyz:3000/playlist/detail?id=" + this.songList[i]["id"]
       );
       this.songs = [];
-      songsData.playlist.tracks.forEach(async item => {
+      let currentSongCheck = false;
+      songsData.playlist.tracks.forEach(async (item) => {
         let songInfo = {};
         songInfo["id"] = item["id"];
         songInfo["name"] = item["name"];
@@ -236,10 +264,53 @@ export default {
             "http://api.xichi.xyz:3000/song/url?id=" + item["id"]
           );
           songInfo["src"] = songsData.data[0].url;
+          if (currentSongCheck === false) {
+            this.currentSong = songInfo["src"];
+            currentSongCheck = true;
+          }
           this.songs.push(songInfo);
-          this.currentSong = songInfo["src"];
         }
       });
+      if (this.firstEntry === true) {
+        this.firstEntry = false;
+      } else {
+        this.$message({ type: "Default", value: "成功切换歌单" });
+        setTimeout(() => {
+          this.$refs.audio.play();
+        }, 1000);
+      }
+    },
+    async getVistorSongs() {
+      const { data: vistorSongListData } = await getSongList();
+      if (vistorSongListData.statusCode === 200) {
+        const { msg: vistorSongList } = vistorSongListData;
+        this.vistorSongList = vistorSongList;
+        this.songs = vistorSongList.map((songMsg) => ({
+          ...songMsg.song,
+        }));
+        this.currentSong = this.songs[0]["src"];
+      }
+      this.$message({ type: "Default", value: "成功切换歌单" });
+      setTimeout(() => {
+        this.$refs.audio.play();
+      }, 1000);
+    },
+    async toggleSongLike(){
+      this.isLike = !this.isLike;
+      if(this.isLike === true){
+        const song = this.songs[this.currentIndex];
+        const date = new Date();
+        const user = localStorage.getItem("Ip")
+        const cityname = localStorage.getItem("cityname");
+        const msg = `一位来自${cityname}的用户${user}在${this.$moment(date).format("lll")}喜欢了这首歌`
+        const {data: result} = await addSong(
+          song,
+          date,
+          user,
+          msg
+        );
+        this.$message({value:result.success, type: "Success"});
+      }
     }
   },
   created() {
@@ -248,7 +319,7 @@ export default {
   updated() {
     //console.log(this.$refs.circle, this.$refs, document.querySelector('.volume'));
   },
-  mounted() {}
+  mounted() {},
 };
 </script>
 
@@ -269,7 +340,7 @@ export default {
       cursor pointer
       animation rotate 2s linear infinite
       transition all 1s ease-in
-    .songList, .header
+    .songList, .header, .visitor-song-list
       display none
     &:hover
       .music-list-wrap
@@ -277,7 +348,7 @@ export default {
         top 20%
         right calc(100% + 5px)
         width 150px
-        height 200px
+        height 220px
         padding 10px
         border-radius 10px
         background-color rgba(0,0,0,.5)
@@ -310,6 +381,12 @@ export default {
           font-size 13px
           font-weight bold
           text-align left
+        .visitor-song-list
+          display block
+          margin-bottom 5px
+          font-size 13px
+          text-align left
+          color #90caf9
   .chooseBox
     font-size 12px
   #canvas
@@ -330,9 +407,45 @@ export default {
       font-size 1rem
       color #fff
       cursor pointer
-    .author
-      padding-left 1rem
-      font-size .3rem
+    .name
+      position absolute
+      top 50%
+      left 50%
+      transform translate(-50%, -50%)
+      &:hover
+        .top
+          transform translate(-50%, -80%)
+        .back
+          opacity .8
+          transform translate(-50%, 10px)
+      .top
+        position absolute
+        transform translate(-50%, -50%)
+        width max-content
+        transition all .5s ease
+      .back
+        display flex
+        align-items center
+        position absolute
+        transform translate(-50%, -50%)
+        width max-content
+        transition all .5s ease
+        opacity 0
+        .author
+          height 15px
+          line-height 15px
+          font-size 15px
+        .like
+          position relative
+          height 15px
+          line-height 15px
+          margin-left 5px
+          .like-icon
+            position absolute 
+            top 0
+            left 0
+            width 15px
+            height 15px
     .volume-wrap
       position absolute
       top 0

@@ -59,7 +59,7 @@ export const addSong = (song, date, user, msg) => {
 }
 
 export const deleteSong = (id) => {
-  return request.post("/songlist/add", {
+  return request.post("/songlist/delete", {
     id
   })
 }
