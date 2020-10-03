@@ -2,9 +2,9 @@
   <div class="home">
     <div class="main-focus">
       <div class="title landInText">Xichi's Homepage</div>
-      <div class="subtitle landInText">欢迎来到西池的个人站点~</div>
+      <div class="subtitle landInText">欢迎来到西池的个人主页~</div>
       <div class="info">
-        <li>o 我是一名就读于南京邮电大学的大二学生，计科专业。</li>
+        <li>o 我是一名就读于南京邮电大学的大三学生，计科专业。</li>
         <li>
           o
           我正在学习前端的漫漫之路上，虽然很菜，但对技术与设计永远拥有最真挚的热情！

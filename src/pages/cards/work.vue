@@ -71,21 +71,6 @@ export default {
           ],
         },
         {
-          img: "http://njupt.xichi.xyz/homepage/work/biyoung.png",
-          url: "http://biyoung.top/",
-          info: "biyoung小程序",
-          github: [
-            {
-              info: "front",
-              url: "https://github.com/1999-XiChi/BiYoung_frontend",
-            },
-            {
-              info: "manage",
-              url: "https://github.com/1999-XiChi/biyoung_manage",
-            },
-          ],
-        },
-        {
           img: "http://njupt.xichi.xyz/homepage/work/xichi%27s%20api.png",
           url: "http://api.xichi.xyz/",
           info: "xichi's api",

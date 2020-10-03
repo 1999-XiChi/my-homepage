@@ -18,7 +18,7 @@
             你好呀~
           </div>
           <div class="subtitle">
-            我是一名就读于南京邮电大学的大二学生，计科专业。我正在学习前端的漫漫之路上，虽然很菜，但对技术与设计永远拥有最真挚的热情！
+            我是一名就读于南京邮电大学的大三学生，计科专业。我正在学习前端的漫漫之路上，虽然很菜，但对技术与设计永远拥有最真挚的热情！
           </div>
         </div>
         <div class="info-content">
@@ -29,7 +29,7 @@
             />
             <div class="title">前端开发者</div>
             <div class="detail">
-              目前比较熟悉的前端技术栈是Vue和NodeJs，现在正在学习React和typescript，希望能不断加油吧！大前端就是坠吊的！用最简单的逻辑，能够体会到从UI到后端到运维的全部乐趣（不是
+              目前比较熟悉的前端技术栈是Vue、React和NodeJs，现在正在学习TypeScript中！大前端就是坠吊的！用最简单的逻辑，能够体会到从UI到后端到运维的全部乐趣（不是
             </div>
           </div>
           <div class="info-card">
@@ -39,7 +39,7 @@
             />
             <div class="title">渣渣画手</div>
             <div class="detail">
-              最爱画萌妹子，只会最土里土气的赛璐璐上色流。上色就像刷漆，你永远不知道下一笔是什么颜色（笑。至今仍在搞原创的原因是，同人实在画不像啊，不然本冷cp爱好者一定在割大腿肉的路上。
+              赛璐璐上色流派。至今仍在搞原创的原因是，同人实在画不像啊，不然本冷cp爱好者一定在割大腿肉的路上。
             </div>
           </div>
           <div class="info-card">
@@ -47,9 +47,9 @@
               class="info-icon"
               src="http://njupt.xichi.xyz/homepage/icon/video.png"
             />
-            <div class="title">梦想成为剪辑er</div>
+            <div class="title">电影游戏爱好者</div>
             <div class="detail">
-              电脑太卡是我偷懒的借口orz本人唯一作品:BV17E411j7ZZ
+              特长是宅。平时爱好就是看电影和打打单机游戏，偏爱探索度高的开放世界游戏（没错，塞尔达天下第一！！）
             </div>
           </div>
         </div>
@@ -66,6 +66,11 @@
                 src="http://njupt.xichi.xyz/blog/QQ图片20200406201436.jpg"
                 alt=""
               />
+            </div>
+          </swiper-slide>
+          <swiper-slide>
+            <div class="swiper-zoom-container">
+              <img src="http://njupt.xichi.xyz/blog/祈祷.jpg" />
             </div>
           </swiper-slide>
           <swiper-slide>
