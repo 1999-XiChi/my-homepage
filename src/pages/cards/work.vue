@@ -13,14 +13,18 @@
           </template>
           <template v-slot:github>
             <div class="github-wrap">
-              <div class="github-item" v-for="(item, index) in work.github" :key="index">
+              <div
+                class="github-item"
+                v-for="(item, index) in work.github"
+                :key="index"
+              >
                 <img
                   style="display:block;"
                   src="http://njupt.xichi.xyz/homepage/work/icon/github.png"
                   class="github-icon"
                   @click="clickFn(item.url)"
                 />
-                <div style="font-size:12px;color:#666;">{{item.info}}</div>
+                <div style="font-size:12px;color:#666;">{{ item.info }}</div>
               </div>
             </div>
           </template>
@@ -71,17 +75,13 @@ export default {
           ],
         },
         {
-          img: "http://njupt.xichi.xyz/homepage/work/xichi%27s%20api.png",
-          url: "http://api.xichi.xyz/",
-          info: "xichi's api",
+          img: "http://njupt.xichi.xyz/homepage/work/calculator-app.png",
+          url: "https://github.com/1999-XiChi/calculator-app/releases",
+          info: "全能计算器APP",
           github: [
             {
-              info: "demo",
-              url: "https://github.com/1999-XiChi/The-first-meeting-Node.js",
-            },
-            {
-              info: "libaray",
-              url: "https://github.com/1999-XiChi/Library-Management-demo",
+              info: "github",
+              url: "https://github.com/1999-XiChi/calculator-app",
             },
           ],
         },
@@ -97,7 +97,33 @@ export default {
             {
               info: "webpack",
               url: "https://github.com/1999-XiChi/webpack-boilerplate",
-            }
+            },
+          ],
+        },
+        {
+          img: "http://njupt.xichi.xyz/homepage/work/huffman.png",
+          url: "http://xichi.xyz/huffman",
+          info: "在线哈夫曼加密&解密",
+          github: [
+            {
+              info: "huffman",
+              url: "https://github.com/1999-XiChi/Huffman-Encryption-Webpage",
+            },
+          ],
+        },
+        {
+          img: "http://njupt.xichi.xyz/homepage/work/xichi%27s%20api.png",
+          url: "http://api.xichi.xyz/",
+          info: "xichi's api",
+          github: [
+            {
+              info: "demo",
+              url: "https://github.com/1999-XiChi/The-first-meeting-Node.js",
+            },
+            {
+              info: "libaray",
+              url: "https://github.com/1999-XiChi/Library-Management-demo",
+            },
           ],
         },
         {

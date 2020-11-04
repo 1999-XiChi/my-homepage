@@ -62,7 +62,7 @@
           :src="
             volume !== 0
               ? 'http://njupt.xichi.xyz/homepage/icon/volume.png'
-              : 'http://njupt.xichi.xyz/homepage/icon/volume-disable.png'
+              : 'http://njupt.xichi.xyz/homepage/icon/volumeN.png'
           "
           @click.stop="mute"
         />
