@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-const db_url = "mongodb://admin:123456@121.5.59.107:27017/homepage?authSource=admin";
+const db_url = "";
 
 mongoose.connect(db_url,{
   useNewUrlParser: true,
