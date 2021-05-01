@@ -49,9 +49,9 @@ export default {
     return {
       workCards: [
         {
-          img: "http://njupt.xichi.xyz/homepage/work/XiChi%27s%20Blog.png",
+          img: "http://njupt.xichi.xyz/blog/blog.xichi.xyz.png",
           url: "http://blog.xichi.xyz/",
-          info: "西池的博客",
+          info: "我的博客",
           github: [
             {
               info: "front",

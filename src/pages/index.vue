@@ -67,10 +67,10 @@ export default {
 <style lang="stylus">
 @font-face
   font-family POWER-SELL
-  src url('http://njupt.xichi.xyz/fonts/POWER%20SELL.ttf')
+  src url('https://njupt.xichi.xyz/fonts/POWER%20SELL.ttf')
 @font-face
   font-family A61
-  src url('http://njupt.xichi.xyz/fontsipder/A61.ttf')
+  src url('https://njupt.xichi.xyz/fontsipder/A61.ttf')
 </style>
 <style lang="stylus" scoped>
 .bg-wrap

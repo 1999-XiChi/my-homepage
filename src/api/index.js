@@ -1,7 +1,7 @@
 import axios from "axios";
 
 let request = axios.create({
-  baseURL: "http://api.xichi.xyz/homepage"
+  baseURL: "https://api.xichi.xyz/homepage"
 })
 
 // MESSAGE API

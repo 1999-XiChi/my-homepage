@@ -352,6 +352,7 @@ export default {
         padding 10px
         border-radius 10px
         background-color rgba(0,0,0,.5)
+        cursor pointer
         &:before
           content ""
           position absolute

@@ -29,7 +29,7 @@
             />
             <div class="title">前端开发者</div>
             <div class="detail">
-              目前比较熟悉的前端技术栈是Vue、React和NodeJs，现在正在学习TypeScript中！大前端就是坠吊的！用最简单的逻辑，能够体会到从UI到后端到运维的全部乐趣（不是
+              目前比较熟悉的前端技术栈是React、Vue和TypeScript，现在正处于找实习状态ing~
             </div>
           </div>
           <div class="info-card">
@@ -49,7 +49,7 @@
             />
             <div class="title">电影游戏爱好者</div>
             <div class="detail">
-              特长是宅。平时爱好就是看电影和打打单机游戏，偏爱探索度高的开放世界游戏（没错，塞尔达天下第一！！）
+              特长是宅，平时爱好就是看电影和打打单机游戏，没事就去海拉鲁大陆上逛逛（塞尔达天下第一！）
             </div>
           </div>
         </div>

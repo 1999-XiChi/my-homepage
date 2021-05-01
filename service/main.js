@@ -23,7 +23,9 @@ app.use(router()) */
 const middleware = compose([
   koaBody(),
   statics(path.join(__dirname, "./public")),
-  cors(),
+  cors({
+    origin: 'https://www.xichi.xyz'
+  }),
   jsonUtil({pretty:false, param: "pretty"}),
   helmet()
 ])
